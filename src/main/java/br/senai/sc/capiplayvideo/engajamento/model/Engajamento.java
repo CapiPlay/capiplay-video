@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Engajamento{
+
     @Id
-    String uuid;
+    private String uuid;
+
 }

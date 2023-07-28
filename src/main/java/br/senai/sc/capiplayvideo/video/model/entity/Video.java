@@ -1,5 +1,7 @@
 package br.senai.sc.capiplayvideo.video.model.entity;
 
+import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 import jakarta.persistence.*;

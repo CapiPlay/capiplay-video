@@ -1,6 +1,6 @@
-package br.senai.sc.capiplayvideo.video.repository;
+package br.senai.sc.capiplayvideo.tag.repository;
 
-import br.senai.sc.capiplayvideo.video.model.entity.Tag;
+import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

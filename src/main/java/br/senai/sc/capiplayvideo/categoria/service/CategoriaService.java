@@ -1,7 +1,7 @@
-package br.senai.sc.capiplayvideo.video.service;
+package br.senai.sc.capiplayvideo.categoria.service;
 
-import br.senai.sc.capiplayvideo.video.model.entity.Categoria;
-import br.senai.sc.capiplayvideo.video.repository.CategoriaRepository;
+import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.categoria.repository.CategoriaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 

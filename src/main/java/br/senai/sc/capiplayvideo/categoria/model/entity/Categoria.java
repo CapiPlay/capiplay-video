@@ -1,8 +1,7 @@
-package br.senai.sc.capiplayvideo.video.model.entity;
+package br.senai.sc.capiplayvideo.categoria.model.entity;
 
-import br.senai.sc.capiplayvideo.video.model.enums.CategoriasEnum;
+import br.senai.sc.capiplayvideo.categoria.model.enums.CategoriasEnum;
 import jakarta.persistence.*;
-import jdk.swing.interop.SwingInterOpUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

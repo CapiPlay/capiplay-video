@@ -1,7 +1,7 @@
 package br.senai.sc.capiplayvideo.video.controller;
 
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
-import br.senai.sc.capiplayvideo.video.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;

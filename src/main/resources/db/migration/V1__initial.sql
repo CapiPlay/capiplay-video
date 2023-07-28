@@ -34,6 +34,15 @@ CREATE TABLE `categoria` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `categoria`
+--
+
+LOCK TABLES `categoria` WRITE;
+/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `engajamento`
 --
 
@@ -45,6 +54,15 @@ CREATE TABLE `engajamento` (
                                PRIMARY KEY (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `engajamento`
+--
+
+LOCK TABLES `engajamento` WRITE;
+/*!40000 ALTER TABLE `engajamento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `engajamento` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `flyway_schema_history`
@@ -70,6 +88,39 @@ CREATE TABLE `flyway_schema_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `flyway_schema_history`
+--
+
+LOCK TABLES `flyway_schema_history` WRITE;
+/*!40000 ALTER TABLE `flyway_schema_history` DISABLE KEYS */;
+INSERT INTO `flyway_schema_history` VALUES (1,'1','add fulltext','SQL','V1__initial.sql',-573574190,'root','2023-07-27 22:47:01',471,1);
+/*!40000 ALTER TABLE `flyway_schema_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pesquisa`
+--
+
+DROP TABLE IF EXISTS `pesquisa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pesquisa` (
+                            `id` bigint NOT NULL AUTO_INCREMENT,
+                            `pesquisa` varchar(255) DEFAULT NULL,
+                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pesquisa`
+--
+
+LOCK TABLES `pesquisa` WRITE;
+/*!40000 ALTER TABLE `pesquisa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pesquisa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tag`
 --
 
@@ -84,6 +135,15 @@ CREATE TABLE `tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `tag`
+--
+
+LOCK TABLES `tag` WRITE;
+/*!40000 ALTER TABLE `tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuario`
 --
 
@@ -92,12 +152,44 @@ DROP TABLE IF EXISTS `usuario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
                            `uuid` varchar(255) NOT NULL,
-                           `caminho_foto` varchar(255) DEFAULT NULL,
-                           `nome_canal` varchar(255) NOT NULL,
-                           `nome_usuario` varchar(255) NOT NULL,
                            PRIMARY KEY (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuario_historico`
+--
+
+DROP TABLE IF EXISTS `usuario_historico`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuario_historico` (
+                                     `usuario_uuid` varchar(255) NOT NULL,
+                                     `historico_id` bigint NOT NULL,
+                                     UNIQUE KEY `UK_ooi0bnx29g23odrb1b6hhdc9h` (`historico_id`),
+                                     KEY `FK15kwpput74pckg0euocbkd3t6` (`usuario_uuid`),
+                                     CONSTRAINT `FK15kwpput74pckg0euocbkd3t6` FOREIGN KEY (`usuario_uuid`) REFERENCES `usuario` (`uuid`),
+                                     CONSTRAINT `FK2kh8dwjaaf3ee5xqmbm15bcdg` FOREIGN KEY (`historico_id`) REFERENCES `pesquisa` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario_historico`
+--
+
+LOCK TABLES `usuario_historico` WRITE;
+/*!40000 ALTER TABLE `usuario_historico` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario_historico` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `video`
@@ -111,7 +203,7 @@ CREATE TABLE `video` (
                          `caminho` varchar(255) DEFAULT NULL,
                          `descricao` varchar(255) DEFAULT NULL,
                          `eh_reels` bit(1) DEFAULT NULL,
-                         `titulo` varchar(255) DEFAULT NULL,
+                         `titulo` varchar(100) DEFAULT NULL,
                          `categoria_id` bigint DEFAULT NULL,
                          PRIMARY KEY (`uuid`),
                          KEY `FKgml8jjonc2do2ei93xrgg6gkr` (`categoria_id`),
@@ -119,6 +211,15 @@ CREATE TABLE `video` (
                          CONSTRAINT `FKgml8jjonc2do2ei93xrgg6gkr` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `video`
+--
+
+LOCK TABLES `video` WRITE;
+/*!40000 ALTER TABLE `video` DISABLE KEYS */;
+/*!40000 ALTER TABLE `video` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `video_tags`
@@ -136,6 +237,15 @@ CREATE TABLE `video_tags` (
                               CONSTRAINT `FKmu0k3ya1nhvduacu248vs4ale` FOREIGN KEY (`tags_tag`) REFERENCES `tag` (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `video_tags`
+--
+
+LOCK TABLES `video_tags` WRITE;
+/*!40000 ALTER TABLE `video_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `video_tags` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -146,4 +256,4 @@ CREATE TABLE `video_tags` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-20 19:29:42
+-- Dump completed on 2023-07-27 19:51:09

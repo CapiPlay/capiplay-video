@@ -1,7 +1,7 @@
-package br.senai.sc.capiplayvideo.video.repository;
+package br.senai.sc.capiplayvideo.categoria.repository;
 
-import br.senai.sc.capiplayvideo.video.model.entity.Categoria;
-import br.senai.sc.capiplayvideo.video.model.enums.CategoriasEnum;
+import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.categoria.model.enums.CategoriasEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,10 @@
 package br.senai.sc.capiplayvideo.video.service;
 
-import br.senai.sc.capiplayvideo.video.exceptions.ObjetoInexistenteException;
+import br.senai.sc.capiplayvideo.categoria.service.CategoriaService;
+import br.senai.sc.capiplayvideo.tag.service.TagService;
+import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
-import br.senai.sc.capiplayvideo.video.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.enums.ResolucaoEnum;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
@@ -10,7 +12,6 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 import jakarta.validation.Valid;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

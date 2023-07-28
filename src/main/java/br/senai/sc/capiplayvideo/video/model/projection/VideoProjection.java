@@ -1,7 +1,7 @@
 package br.senai.sc.capiplayvideo.video.model.projection;
 
-import br.senai.sc.capiplayvideo.video.model.entity.Categoria;
-import br.senai.sc.capiplayvideo.video.model.entity.Tag;
+import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.video.utils.DiretorioUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
