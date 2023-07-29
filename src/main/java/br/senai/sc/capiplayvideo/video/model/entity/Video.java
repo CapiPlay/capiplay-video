@@ -17,6 +17,7 @@ import java.util.List;
 public class Video {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
 
     @Size(min = 3, max = 100)
