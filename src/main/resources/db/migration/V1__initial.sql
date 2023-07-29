@@ -88,16 +88,6 @@ CREATE TABLE `flyway_schema_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `flyway_schema_history`
---
-
-LOCK TABLES `flyway_schema_history` WRITE;
-/*!40000 ALTER TABLE `flyway_schema_history` DISABLE KEYS */;
-INSERT INTO `flyway_schema_history` VALUES (1,'1','add fulltext','SQL','V1__initial.sql',-573574190,'root','2023-07-27 22:47:01',471,1);
-/*!40000 ALTER TABLE `flyway_schema_history` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pesquisa`
 --
 
