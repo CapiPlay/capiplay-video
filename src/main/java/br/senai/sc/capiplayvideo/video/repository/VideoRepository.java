@@ -22,6 +22,8 @@ public interface VideoRepository extends JpaRepository<Video, String> {
 
     Optional<VideoProjection> findByUuid(String uuid);
 
+    List<Video> findAllByEhReelsIsTrue();
+
     @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3 +" +
             " (SELECT MAX(MATCH(categoria.categoria_string) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2)" +
             " FROM categoria WHERE video.categoria_id = categoria.id) +" +
