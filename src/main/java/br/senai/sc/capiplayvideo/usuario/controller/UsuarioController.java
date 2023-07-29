@@ -1,6 +1,6 @@
 package br.senai.sc.capiplayvideo.usuario.controller;
 
-import br.senai.sc.capiplayvideo.usuario.model.projection.UsuarioHistoricoProjection;
+import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UsuarioController {
     private UsuarioService service;
 
     @GetMapping("/get/historico/{uuid}")
-    public ResponseEntity<List<UsuarioHistoricoProjection>> buscarHistorico(@PathVariable String uuid) {
+    public ResponseEntity<List<Usuario>> buscarHistorico(@PathVariable String uuid) {
         return ResponseEntity.ok(service.buscarHistorico(uuid));
     }
 }

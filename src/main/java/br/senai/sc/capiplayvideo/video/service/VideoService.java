@@ -3,6 +3,8 @@ package br.senai.sc.capiplayvideo.video.service;
 import br.senai.sc.capiplayvideo.categoria.service.CategoriaService;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
+import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
+import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
@@ -16,6 +18,7 @@ import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,20 +31,31 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.util.List;
+import java.util.Random;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+
 @Service
 public class VideoService {
 
-    @Autowired
-    private VideoRepository repository;
-
-    @Autowired
-    private TagService tagService;
-
-    @Autowired
-    private CategoriaService categoriaService;
+    private final VideoRepository repository;
+    private final TagService tagService;
+    private final CategoriaService categoriaService;
+    private final UsuarioService usuarioService;
 
     @Value("${diretorioVideos}")
     private String diretorio;
+
+    @Autowired
+    public VideoService(VideoRepository repository, TagService tagService,
+                        CategoriaService categoriaService, UsuarioService usuarioService) {
+        this.repository = repository;
+        this.tagService = tagService;
+        this.categoriaService = categoriaService;
+        this.usuarioService = usuarioService;
+    }
 
     public void salvar(@Valid VideoDTO videoDTO) throws IOException {
         String uuid = GeradorUuidUtils.gerarUuid();
@@ -91,5 +105,17 @@ public class VideoService {
 
     public void deletar(String uuid) {
         repository.deleteById(uuid);
+    }
+
+    public Video buscarReels(String uuidUsuario) {
+        Usuario usuario = usuarioService.buscarUm(uuidUsuario);
+        List<Video> videos = repository.findAllByEhReelsIsTrue();
+        for (Video video : videos) {
+            if (!usuario.getHistoricoReels().contains(video)) {
+                usuario.getHistoricoReels().add(video);
+                return video;
+            }
+        }
+        return videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1);
     }
 }
