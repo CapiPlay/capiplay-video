@@ -7,7 +7,7 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,16 +43,17 @@ public class VideoController {
 
     @GetMapping
     public Page<VideoMiniaturaProjection> buscarTodos(
-            @RequestParam("pageable") Pageable pageable) {
-        return service.buscarTodos(pageable);
+            @RequestParam("size") int size,
+            @RequestParam("page") int page) {
+        return service.buscarTodos(PageRequest.of(page, size));
     }
 
     @GetMapping("/buscar-por-categoria")
     public Page<VideoMiniaturaProjection> buscarPorCategoria(
             @RequestParam("categoria") Categoria categoria,
-            @RequestParam("pageable") Pageable pageable
-    ) {
-        return service.buscarPorCategoria(pageable, categoria);
+            @RequestParam("size") int size,
+            @RequestParam("page") int page) {
+        return service.buscarPorCategoria(PageRequest.of(page, size), categoria);
     }
 
     @DeleteMapping("/{uuid}")
