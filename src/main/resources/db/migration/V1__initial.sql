@@ -88,6 +88,15 @@ CREATE TABLE `flyway_schema_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `flyway_schema_history`
+--
+
+LOCK TABLES `flyway_schema_history` WRITE;
+/*!40000 ALTER TABLE `flyway_schema_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `flyway_schema_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pesquisa`
 --
 
@@ -182,6 +191,32 @@ LOCK TABLES `usuario_historico` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `usuario_historico_reels`
+--
+
+DROP TABLE IF EXISTS `usuario_historico_reels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuario_historico_reels` (
+                                           `usuario_uuid` varchar(255) NOT NULL,
+                                           `historico_reels_uuid` varchar(255) NOT NULL,
+                                           KEY `FK34ycol52fo70les0yowsihbg4` (`historico_reels_uuid`),
+                                           KEY `FKiq9hy244u0d3kaa16592c6dxb` (`usuario_uuid`),
+                                           CONSTRAINT `FK34ycol52fo70les0yowsihbg4` FOREIGN KEY (`historico_reels_uuid`) REFERENCES `video` (`uuid`),
+                                           CONSTRAINT `FKiq9hy244u0d3kaa16592c6dxb` FOREIGN KEY (`usuario_uuid`) REFERENCES `usuario` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario_historico_reels`
+--
+
+LOCK TABLES `usuario_historico_reels` WRITE;
+/*!40000 ALTER TABLE `usuario_historico_reels` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario_historico_reels` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `video`
 --
 
@@ -246,4 +281,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-27 19:51:09
+-- Dump completed on 2023-07-31 21:27:55
