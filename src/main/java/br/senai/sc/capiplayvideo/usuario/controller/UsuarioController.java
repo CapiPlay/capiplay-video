@@ -20,6 +20,6 @@ public class UsuarioController {
 
     @GetMapping("/get/historico/{uuid}")
     public ResponseEntity<List<Usuario>> buscarHistorico(@PathVariable String uuid) {
-        return ResponseEntity.ok(service.buscarHistorico(uuid));
+        return ResponseEntity.ok(service.buscarHistoricoPesquisa(uuid));
     }
 }

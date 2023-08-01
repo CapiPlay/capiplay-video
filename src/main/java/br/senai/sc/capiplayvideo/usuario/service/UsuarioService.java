@@ -19,7 +19,7 @@ public class UsuarioService {
         repository.save(usuario);
     }
 
-    public List<Usuario> buscarHistorico(String uuid) {
+    public List<Usuario> buscarHistoricoPesquisa(String uuid) {
         Optional<Usuario> optionalUsuario = repository.findById(uuid);
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
@@ -27,9 +27,8 @@ public class UsuarioService {
             Collections.reverse(historico);
             repository.save(usuario);
             return Collections.singletonList(usuario);
-        } else {
-            return Collections.emptyList();
         }
+        throw new ObjetoInexistenteException();
     }
 
     public Usuario buscarUm(String uuid) {

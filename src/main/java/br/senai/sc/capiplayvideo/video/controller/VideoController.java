@@ -63,8 +63,7 @@ public class VideoController {
     }
 
     @GetMapping("/buscar-reels/{uuidUsuario}")
-    public ResponseEntity<Video> buscarReels(@PathVariable String uuidUsuario) {
+    public ResponseEntity<VideoProjection> buscarReels(@PathVariable String uuidUsuario) {
         return ResponseEntity.ok(service.buscarReels(uuidUsuario));
     }
-// testeaaaaaa
 }

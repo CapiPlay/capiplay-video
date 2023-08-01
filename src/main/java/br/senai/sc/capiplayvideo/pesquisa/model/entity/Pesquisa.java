@@ -1,9 +1,7 @@
 package br.senai.sc.capiplayvideo.pesquisa.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +17,9 @@ public class Pesquisa {
     private Long id;
 
     private String pesquisa;
+
+    @OneToOne // Tem que fazer isso ainda, tanto a lógica quanto a mudança no banco de dados
+    private Usuario usuario;
 
     public Pesquisa(String pesquisa) {
         this.pesquisa = pesquisa;

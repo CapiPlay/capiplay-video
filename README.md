@@ -170,6 +170,39 @@
 ```
 </details>
 
+<details>
+<summary>Buscar um CapiShorts</summary>
+
+##### Mapeamento:
+```ruby
+/api/video/buscar-reels/{uuidUsuario}
+```
+##### Retorno:
+```ruby
+{
+    "tags": [
+        {
+            "tag": "X"
+        },
+        {
+            "tag": "Y"
+        }
+    ],
+    "caminhos": [
+       "caminho1.jpeg",
+       "caminho2.mp4"
+    ],
+    "categoria": {
+        "id": 1,
+        "categoriaString": "categoria"
+    },
+    "titulo": "titulo",
+    "descricao": "descricao",
+    "uuid": "uuid"
+}
+```
+</details>
+
 ## Pesquisa
 
 <details>
@@ -189,6 +222,40 @@
         "caminhos": [
             "caminho1.jpeg",
             "caminho2.mp4"
+        ]
+    }
+]
+```
+</details>
+
+## Usuário
+
+<details>
+<summary>Get histórico do usuário</summary>
+
+##### Mapeamento:
+```ruby
+/api/usuario/get/historico/{uuid}
+```
+
+##### Retorno:
+```ruby
+[
+    {
+        "uuid": "1",
+        "historico": [
+            {
+                "id": 3,
+                "pesquisa": "pesquisa3"
+            },
+            {
+                "id": 2,
+                "pesquisa": "pesquisa2"
+            },
+            {
+                "id": 1,
+                "pesquisa": "pesquisa1"
+            }
         ]
     }
 ]

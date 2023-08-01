@@ -35,9 +35,9 @@ public class Video {
 
     private Boolean ehReels;
 
-    public Video() {
-        this.uuid = GeradorUuidUtils.gerarUuid();
-    }
+    private Long curtidas;
+
+    private Long visualizacoes;
 
     public Video(String uuid, VideoDTO videoDTO, String caminho) {
         this.uuid = uuid;

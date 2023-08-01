@@ -107,15 +107,16 @@ public class VideoService {
         repository.deleteById(uuid);
     }
 
-    public Video buscarReels(String uuidUsuario) {
+    public VideoProjection buscarReels(String uuidUsuario) {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         List<Video> videos = repository.findAllByEhReelsIsTrue();
         for (Video video : videos) {
             if (!usuario.getHistoricoReels().contains(video)) {
                 usuario.getHistoricoReels().add(video);
-                return video;
+                usuarioService.salvar(usuario);
+                return repository.findByUuid(video.getUuid()).get();
             }
         }
-        return videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1);
+        return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
     }
 }
