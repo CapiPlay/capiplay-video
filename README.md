@@ -228,10 +228,8 @@
 ```
 </details>
 
-## Usuário
-
 <details>
-<summary>Get histórico do usuário</summary>
+<summary>Get histórico de pesquisa do usuário</summary>
 
 ##### Mapeamento:
 ```ruby
@@ -242,19 +240,15 @@
 ```ruby
 [
     {
-        "uuid": "1",
+        "uuid": "uuid",
         "historico": [
             {
-                "id": 3,
-                "pesquisa": "pesquisa3"
-            },
-            {
                 "id": 2,
-                "pesquisa": "pesquisa2"
+                "pesquisa": "ultimaPesquisa"
             },
             {
                 "id": 1,
-                "pesquisa": "pesquisa1"
+                "pesquisa": "primeiraPesquisa"
             }
         ]
     }

@@ -12,5 +12,6 @@ import java.util.List;
 @Repository
 public interface PesquisaRepository extends JpaRepository<Pesquisa, Long> {
 
+    List<Pesquisa> findAllByOrderByDataInsercaoDesc();
 
 }

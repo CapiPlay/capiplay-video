@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -18,8 +20,11 @@ public class Pesquisa {
 
     private String pesquisa;
 
-    @OneToOne // Tem que fazer isso ainda, tanto a lógica quanto a mudança no banco de dados
+    @ManyToOne // dar update no sql para criar a coluna usuario_id
     private Usuario usuario;
+
+    // ver a logica disso aqui para retornar o historico
+    private LocalDateTime dataInsercao = LocalDateTime.now();
 
     public Pesquisa(String pesquisa) {
         this.pesquisa = pesquisa;

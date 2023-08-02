@@ -19,7 +19,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
 
-    @OneToMany
+    @OneToMany(mappedBy = "usuario")
     private List<Pesquisa> historico;
 
     @ManyToMany

@@ -1,5 +1,6 @@
 package br.senai.sc.capiplayvideo.usuario.controller;
 
+import br.senai.sc.capiplayvideo.pesquisa.model.entity.Pesquisa;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import lombok.AllArgsConstructor;
