@@ -24,14 +24,14 @@ public class UsuarioService {
 
     public List<Usuario> buscarHistoricoPesquisa(String uuid) {
         Optional<Usuario> optionalUsuario = repository.findById(uuid);
-//        if (optionalUsuario.isPresent()) {
-//            Usuario usuario = optionalUsuario.get();
-//            List<Pesquisa> historico = usuario.getHistorico();
-//            Collections.reverse(historico);
-//            repository.save(usuario);
-//            return Collections.singletonList(usuario);
-//        }
-//        throw new ObjetoInexistenteException();
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            List<Pesquisa> historico = usuario.getHistorico();
+            Collections.reverse(historico);
+            repository.save(usuario);
+            return Collections.singletonList(usuario);
+        }
+        throw new ObjetoInexistenteException();
     }
 
     public Usuario buscarUm(String uuid) {

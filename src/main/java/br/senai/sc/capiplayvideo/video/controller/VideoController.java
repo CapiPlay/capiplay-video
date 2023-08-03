@@ -1,8 +1,7 @@
 package br.senai.sc.capiplayvideo.video.controller;
 
-import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
-import br.senai.sc.capiplayvideo.video.model.entity.Video;
+import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
@@ -62,8 +61,9 @@ public class VideoController {
         service.deletar(uuid);
     }
 
-    @GetMapping("/buscar-reels/{uuidUsuario}")
-    public ResponseEntity<VideoProjection> buscarReels(@PathVariable String uuidUsuario) {
-        return ResponseEntity.ok(service.buscarReels(uuidUsuario));
+    @GetMapping("/buscar-reels")
+    public ResponseEntity<VideoProjection> buscarReels(@RequestHeader("usuarioId") String usuarioId) {
+        System.out.println("Chegou aqui");
+        return ResponseEntity.ok(service.buscarReels(usuarioId));
     }
 }
