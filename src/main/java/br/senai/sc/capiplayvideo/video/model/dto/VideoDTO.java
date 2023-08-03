@@ -11,6 +11,6 @@ public record VideoDTO(String titulo,
                        String categoria,
                        Boolean ehReels,
                        MultipartFile video,
-                       MultipartFile miniatura) {
-
+                       MultipartFile miniatura,
+                       String usuarioId) {
 }

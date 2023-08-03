@@ -30,15 +30,17 @@ public class VideoController {
             @RequestParam("categoria") String categoria,
             @RequestParam("ehReels") Boolean ehReels,
             @RequestParam("video") MultipartFile video,
-            @RequestParam("miniatura") MultipartFile miniatura
+            @RequestParam("miniatura") MultipartFile miniatura,
+            @RequestHeader("usuarioId") String usuarioId
     ) throws IOException {
-        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, ehReels, video, miniatura));
+        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, ehReels, video, miniatura, usuarioId));
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid) {
-        return ResponseEntity.ok(service.buscarUm(uuid));
+    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid, @RequestHeader("usuarioId") String usuarioId) {
+
+        return ResponseEntity.ok(service.buscarUm(uuid, usuarioId));
     }
 
     @GetMapping

@@ -1,7 +1,9 @@
 package br.senai.sc.capiplayvideo.video.model.entity;
 
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.engajamento.amqp.events.VideoAtualizadoEvent;
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
+import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 import jakarta.persistence.*;
@@ -39,6 +41,9 @@ public class Video {
 
     private Long visualizacoes;
 
+    @ManyToOne
+    private Usuario usuario;
+
     public Video(String uuid, VideoDTO videoDTO, String caminho) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
@@ -47,6 +52,11 @@ public class Video {
         this.ehReels = videoDTO.ehReels();
         this.tags = Tag.converterLista(videoDTO.tags());
         this.categoria = new Categoria(videoDTO.categoria());
+        this.usuario = new Usuario(videoDTO.usuarioId());
+    }
+
+    public Video(String uuid){
+        this.uuid = uuid;
     }
 
 }

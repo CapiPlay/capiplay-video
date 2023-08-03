@@ -26,7 +26,7 @@ public class UsuarioService {
         Optional<Usuario> optionalUsuario = repository.findById(uuid);
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
-            List<Pesquisa> historico = usuario.getHistorico();
+            List<Pesquisa> historico = usuario.getHistoricoPesquisa();
             Collections.reverse(historico);
             repository.save(usuario);
             return Collections.singletonList(usuario);

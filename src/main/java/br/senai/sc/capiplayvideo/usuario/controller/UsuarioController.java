@@ -20,9 +20,8 @@ public class UsuarioController {
 
     private UsuarioService service;
 
-    @GetMapping("/get/historico")
-    public ResponseEntity<List<Usuario>> buscarHistorico(@RequestHeader("usuarioId") String usuarioId) {
-        System.out.println("Chegou aqui");
+    @GetMapping("/get/historico-pesquisa")
+    public ResponseEntity<List<Usuario>> buscarHistoricoPesquisa(@RequestHeader("usuarioId") String usuarioId) {
         return ResponseEntity.ok(service.buscarHistoricoPesquisa(usuarioId));
     }
 }

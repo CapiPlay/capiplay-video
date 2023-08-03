@@ -4,6 +4,7 @@ import br.senai.sc.capiplayvideo.categoria.service.CategoriaService;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
+import br.senai.sc.capiplayvideo.usuario.model.entity.UsuarioVisualizaVideo;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
@@ -99,7 +100,13 @@ public class VideoService {
         return repository.findAllByCategoria(categoria, pageable);
     }
 
-    public VideoProjection buscarUm(String uuid) {
+    public VideoProjection buscarUm(String uuid, String uuidUsuario) {
+        if (uuidUsuario == null) {
+            return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
+        }
+        Usuario usuario = usuarioService.buscarUm(uuidUsuario);
+        usuario.getHistoricoVisualizacao().add(new UsuarioVisualizaVideo(usuario, new Video(uuid)));
+        usuarioService.salvar(usuario);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
@@ -118,5 +125,13 @@ public class VideoService {
             }
         }
         return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
+    }
+
+    public Video buscarUmVideo(String uuid) {
+        return repository.findById(uuid).orElseThrow(ObjetoInexistenteException::new);
+    }
+
+    public void atualizarVideo(Video video) {
+        repository.save(video);
     }
 }
