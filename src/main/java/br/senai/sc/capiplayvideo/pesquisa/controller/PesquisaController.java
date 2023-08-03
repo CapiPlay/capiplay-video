@@ -11,18 +11,18 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/pesquisa")
 public class PesquisaController {
 
     private PesquisaService pesquisaService;
 
-    // RequestHeader uuid
     @GetMapping("/{string}")
     public ResponseEntity<List<VideoMiniaturaProjection>> buscarVideos(
             @PathVariable String string,
             @RequestHeader String usuarioId
     ) {
-        Pesquisa pesquisa = new Pesquisa(string);
+        Pesquisa pesquisa = new Pesquisa(string, usuarioId);
         return ResponseEntity.ok(pesquisaService.buscarVideos(pesquisa, usuarioId));
     }
 
