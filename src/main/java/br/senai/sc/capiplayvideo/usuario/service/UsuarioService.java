@@ -22,8 +22,8 @@ public class UsuarioService {
         repository.save(usuario);
     }
 
-    public List<Usuario> buscarHistoricoPesquisa(String uuid) {
-        Optional<Usuario> optionalUsuario = repository.findById(uuid);
+//    public List<Usuario> buscarHistoricoPesquisa(String uuid) {
+//        Optional<Usuario> optionalUsuario = repository.findById(uuid);
 //        if (optionalUsuario.isPresent()) {
 //            Usuario usuario = optionalUsuario.get();
 //            List<Pesquisa> historico = usuario.getHistorico();
@@ -32,7 +32,7 @@ public class UsuarioService {
 //            return Collections.singletonList(usuario);
 //        }
 //        throw new ObjetoInexistenteException();
-    }
+//    }
 
     public Usuario buscarUm(String uuid) {
         return repository.findById(uuid).orElseThrow(ObjetoInexistenteException::new);

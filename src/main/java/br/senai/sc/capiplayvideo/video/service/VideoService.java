@@ -119,4 +119,12 @@ public class VideoService {
         }
         return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
     }
+
+    public Video buscarUmVideo(String uuid) {
+        return repository.findById(uuid).orElseThrow(ObjetoInexistenteException::new);
+    }
+
+    public void atualizarVideo(Video video) {
+        repository.save(video);
+    }
 }

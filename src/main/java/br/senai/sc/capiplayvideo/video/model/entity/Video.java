@@ -1,6 +1,7 @@
 package br.senai.sc.capiplayvideo.video.model.entity;
 
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.engajamento.amqp.events.VideoAtualizadoEvent;
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
@@ -47,6 +48,10 @@ public class Video {
         this.ehReels = videoDTO.ehReels();
         this.tags = Tag.converterLista(videoDTO.tags());
         this.categoria = new Categoria(videoDTO.categoria());
+    }
+
+    public Video(VideoAtualizadoEvent videoAtualizadoEvent) {
+
     }
 
 }
