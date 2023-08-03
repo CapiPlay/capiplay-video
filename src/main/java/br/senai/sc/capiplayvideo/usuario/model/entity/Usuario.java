@@ -25,4 +25,8 @@ public class Usuario {
     @ManyToMany
     private List<Video> historicoReels;
 
+    public Usuario(String uuid) {
+        this.uuid = uuid;
+    }
+
 }
