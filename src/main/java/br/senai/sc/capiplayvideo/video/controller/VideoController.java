@@ -38,8 +38,9 @@ public class VideoController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid) {
-        return ResponseEntity.ok(service.buscarUm(uuid));
+    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid, @RequestHeader("usuarioId") String usuarioId) {
+
+        return ResponseEntity.ok(service.buscarUm(uuid, usuarioId));
     }
 
     @GetMapping

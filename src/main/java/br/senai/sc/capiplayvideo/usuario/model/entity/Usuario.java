@@ -20,10 +20,10 @@ public class Usuario {
     private String uuid;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Pesquisa> historico;
+    private List<Pesquisa> historicoPesquisa;
 
-    @ManyToMany
-    private List<Video> historicoReels;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
+    private List<UsuarioVisualizaVideo> historicoVisualizacao;
 
     public Usuario(String uuid) {
         this.uuid = uuid;

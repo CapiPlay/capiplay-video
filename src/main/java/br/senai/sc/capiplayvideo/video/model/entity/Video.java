@@ -55,4 +55,8 @@ public class Video {
         this.usuario = new Usuario(videoDTO.usuarioId());
     }
 
+    public Video(String uuid){
+        this.uuid = uuid;
+    }
+
 }
