@@ -10,12 +10,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Video {
 
     @Id
@@ -43,6 +45,8 @@ public class Video {
 
     @ManyToOne
     private Usuario usuario;
+
+    private Boolean ehAtivo = true;
 
     public Video(String uuid, VideoDTO videoDTO, String caminho) {
         this.uuid = uuid;

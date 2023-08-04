@@ -21,7 +21,7 @@ public class UsuarioController {
     private UsuarioService service;
 
     @GetMapping("/get/historico-pesquisa")
-    public ResponseEntity<List<Usuario>> buscarHistoricoPesquisa(@RequestHeader("usuarioId") String usuarioId) {
+    public ResponseEntity<List<Pesquisa>> buscarHistoricoPesquisa(@RequestHeader("usuarioId") String usuarioId) {
         return ResponseEntity.ok(service.buscarHistoricoPesquisa(usuarioId));
     }
 }

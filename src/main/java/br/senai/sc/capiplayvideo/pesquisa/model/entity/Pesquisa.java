@@ -1,6 +1,7 @@
 package br.senai.sc.capiplayvideo.pesquisa.model.entity;
 
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,14 +21,19 @@ public class Pesquisa {
 
     private String pesquisa;
 
-    @ManyToOne // dar update no sql para criar a coluna usuario_id
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private Usuario usuario;
 
-    // ver a logica disso aqui para retornar o historico
     private LocalDateTime dataInsercao = LocalDateTime.now();
 
     public Pesquisa(String pesquisa) {
         this.pesquisa = pesquisa;
     }
 
+    public Pesquisa(String string, String usuarioId) {
+        this.pesquisa = string;
+        this.usuario = new Usuario(usuarioId);
+    }
 }

@@ -38,8 +38,7 @@ public class VideoController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid, @RequestHeader("usuarioId") String usuarioId) {
-
+    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid, @RequestHeader(value = "usuarioId", required = false) String usuarioId) {
         return ResponseEntity.ok(service.buscarUm(uuid, usuarioId));
     }
 
@@ -58,14 +57,8 @@ public class VideoController {
         return service.buscarPorCategoria(PageRequest.of(page, size), categoria);
     }
 
-    @DeleteMapping("/{uuid}")
-    public void deletar(@PathVariable String uuid) {
-        service.deletar(uuid);
-    }
-
     @GetMapping("/buscar-reels")
-    public ResponseEntity<VideoProjection> buscarReels(@RequestHeader("usuarioId") String usuarioId) {
-        System.out.println("Chegou aqui");
+    public ResponseEntity<VideoProjection> buscarReels(@RequestHeader(value = "usuarioId", required = false) String usuarioId) {
         return ResponseEntity.ok(service.buscarReels(usuarioId));
     }
 }

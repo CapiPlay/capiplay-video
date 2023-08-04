@@ -6,6 +6,7 @@ import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.usuario.model.entity.UsuarioVisualizaVideo;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
+import br.senai.sc.capiplayvideo.usuario.service.UsuarioVisualizaVideoService;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
@@ -45,17 +46,20 @@ public class VideoService {
     private final TagService tagService;
     private final CategoriaService categoriaService;
     private final UsuarioService usuarioService;
+    private final UsuarioVisualizaVideoService usuarioVisualizaVideoService;
 
     @Value("${diretorioVideos}")
     private String diretorio;
 
     @Autowired
     public VideoService(VideoRepository repository, TagService tagService,
-                        CategoriaService categoriaService, UsuarioService usuarioService) {
+                        CategoriaService categoriaService, UsuarioService usuarioService,
+                        UsuarioVisualizaVideoService usuarioVisualizaVideoService) {
         this.repository = repository;
         this.tagService = tagService;
         this.categoriaService = categoriaService;
         this.usuarioService = usuarioService;
+        this.usuarioVisualizaVideoService = usuarioVisualizaVideoService;
     }
 
     public void salvar(@Valid VideoDTO videoDTO) throws IOException {
@@ -105,21 +109,24 @@ public class VideoService {
             return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
         }
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
-        usuario.getHistoricoVisualizacao().add(new UsuarioVisualizaVideo(usuario, new Video(uuid)));
+        UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(uuid));
+        usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
+        usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
         usuarioService.salvar(usuario);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
-    public void deletar(String uuid) {
-        repository.deleteById(uuid);
-    }
-
     public VideoProjection buscarReels(String uuidUsuario) {
-        Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         List<Video> videos = repository.findAllByEhReelsIsTrue();
+        if (uuidUsuario == null) {
+            return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
+        }
+        Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         for (Video video : videos) {
-            if (!usuario.getHistoricoReels().contains(video)) {
-                usuario.getHistoricoReels().add(video);
+            if (!usuario.getHistoricoVideo().contains(video)) {
+                UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, video);
+                usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
+                usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
                 usuarioService.salvar(usuario);
                 return repository.findByUuid(video.getUuid()).get();
             }

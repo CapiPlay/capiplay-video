@@ -22,8 +22,8 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Pesquisa> historicoPesquisa;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
-    private List<UsuarioVisualizaVideo> historicoVisualizacao;
+    @OneToMany(mappedBy = "usuario")
+    private List<UsuarioVisualizaVideo> historicoVideo;
 
     public Usuario(String uuid) {
         this.uuid = uuid;

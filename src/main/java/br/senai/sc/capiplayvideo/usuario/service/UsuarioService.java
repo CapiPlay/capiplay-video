@@ -7,6 +7,7 @@ import br.senai.sc.capiplayvideo.pesquisa.service.PesquisaService;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.usuario.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,16 +23,8 @@ public class UsuarioService {
         repository.save(usuario);
     }
 
-    public List<Usuario> buscarHistoricoPesquisa(String uuid) {
-        Optional<Usuario> optionalUsuario = repository.findById(uuid);
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            List<Pesquisa> historico = usuario.getHistoricoPesquisa();
-            Collections.reverse(historico);
-            repository.save(usuario);
-            return Collections.singletonList(usuario);
-        }
-        throw new ObjetoInexistenteException();
+    public List<Pesquisa> buscarHistoricoPesquisa(String uuid) {
+        return pesquisaRepository.findAllByUsuario_Uuid(uuid, Sort.by(Sort.Direction.DESC, "dataInsercao"));
     }
 
     public Usuario buscarUm(String uuid) {

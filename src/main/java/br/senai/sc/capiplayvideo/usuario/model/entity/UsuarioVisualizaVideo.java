@@ -1,10 +1,7 @@
 package br.senai.sc.capiplayvideo.usuario.model.entity;
 
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +14,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioVisualizaVideo {
+
     @Id
-    private String uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long uuid;
 
     @ManyToOne
     private Usuario usuario;

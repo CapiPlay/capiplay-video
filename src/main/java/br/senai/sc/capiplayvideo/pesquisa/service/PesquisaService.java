@@ -22,7 +22,7 @@ public class PesquisaService {
 
     public List<VideoMiniaturaProjection> buscarVideos(Pesquisa pesquisa, String uuid) {
         Usuario usuario = usuarioService.buscarUm(uuid);
-        usuario.getHistorico().add(pesquisa);
+        usuario.getHistoricoPesquisa().add(pesquisa);
         repository.save(pesquisa);
         usuarioService.salvar(usuario);
         return videoRepository.searchBy(pesquisa.getPesquisa());
