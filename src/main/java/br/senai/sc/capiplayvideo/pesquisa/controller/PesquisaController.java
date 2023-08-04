@@ -22,7 +22,6 @@ public class PesquisaController {
             @RequestHeader("usuarioId") String usuarioId
     ) {
         Pesquisa pesquisa = new Pesquisa(string, usuarioId);
-        System.out.println("Chegou aqui");
         return ResponseEntity.ok(pesquisaService.buscarVideos(pesquisa, usuarioId));
     }
 

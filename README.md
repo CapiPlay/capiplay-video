@@ -7,7 +7,7 @@
 ```ruby
 /api/video/criar
 ```
-##### Parâmetros requeridos:
+##### Parâmetros/Headers requeridos:
 ```ruby
 @RequestParam("titulo") String titulo,
 @RequestParam("descricao") String descricao,
@@ -16,6 +16,7 @@
 @RequestParam("ehReels") Boolean ehReels,
 @RequestParam("video") MultipartFile video,
 @RequestParam("miniatura") MultipartFile miniatura
+@RequestHeader("usuarioId") String usuarioId
 ```
 </details>
 
@@ -26,6 +27,12 @@
 ```ruby
 /api/video/buscar-completo/{uuid}
 ```
+
+##### Headers opcionais:
+```ruby
+@RequestHeader("usuarioId") String usuarioId
+```
+
 ##### Retorno:
 ```ruby
 {
@@ -162,21 +169,18 @@
 </details>
 
 <details>
-<summary>Delete de um vídeo</summary>
-  
-##### Mapeamento:
-```ruby
-/api/video/{uuid}
-```
-</details>
-
-<details>
 <summary>Buscar um CapiShorts</summary>
 
 ##### Mapeamento:
 ```ruby
 /api/video/buscar-reels
 ```
+
+##### Headers opcionais:
+```ruby
+@RequestHeader("usuarioId") String usuarioId
+```
+
 ##### Retorno:
 ```ruby
 {
@@ -213,6 +217,11 @@
 /api/pesquisa/{pesquisa}
 ```
 
+##### Headers requeridos:
+```ruby
+@RequestHeader("usuarioId") String usuarioId
+```
+
 ##### Retorno:
 ```ruby
 [
@@ -234,6 +243,11 @@
 ##### Mapeamento:
 ```ruby
 /api/usuario/historico-pesquisa
+```
+
+##### Headers requeridos:
+```ruby
+@RequestHeader("usuarioId") String usuarioId
 ```
 
 ##### Retorno:
