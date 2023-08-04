@@ -22,7 +22,7 @@ public class VideoController {
 
     private final VideoService service;
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<Void> criar(
             @RequestParam("titulo") String titulo,
             @RequestParam("descricao") String descricao,
@@ -37,12 +37,12 @@ public class VideoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/buscar-completo/{uuid}")
     public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid, @RequestHeader(value = "usuarioId", required = false) String usuarioId) {
         return ResponseEntity.ok(service.buscarUm(uuid, usuarioId));
     }
 
-    @GetMapping
+    @GetMapping("/buscar-resumido")
     public Page<VideoMiniaturaProjection> buscarTodos(
             @RequestParam("size") int size,
             @RequestParam("page") int page) {

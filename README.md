@@ -5,7 +5,7 @@
   
 ##### Mapeamento:
 ```ruby
-/api/video
+/api/video/criar
 ```
 ##### Parâmetros requeridos:
 ```ruby
@@ -24,7 +24,7 @@
   
 ##### Mapeamento:
 ```ruby
-/api/video/{uuid}
+/api/video/buscar-completo/{uuid}
 ```
 ##### Retorno:
 ```ruby
@@ -57,7 +57,7 @@
   
 ##### Mapeamento:
 ```ruby
-/api/video
+/api/video/buscar-resumido
 ```
 #####  Parâmetros requeridos:
 ```ruby
@@ -175,7 +175,7 @@
 
 ##### Mapeamento:
 ```ruby
-/api/video/buscar-reels/{uuidUsuario}
+/api/video/buscar-reels
 ```
 ##### Retorno:
 ```ruby
@@ -233,7 +233,7 @@
 
 ##### Mapeamento:
 ```ruby
-/api/usuario/get/historico/{uuid}
+/api/usuario/historico-pesquisa
 ```
 
 ##### Retorno:

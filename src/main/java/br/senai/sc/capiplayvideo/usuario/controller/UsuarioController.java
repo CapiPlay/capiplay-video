@@ -20,7 +20,7 @@ public class UsuarioController {
 
     private UsuarioService service;
 
-    @GetMapping("/get/historico-pesquisa")
+    @GetMapping("/historico-pesquisa")
     public ResponseEntity<List<Pesquisa>> buscarHistoricoPesquisa(@RequestHeader("usuarioId") String usuarioId) {
         return ResponseEntity.ok(service.buscarHistoricoPesquisa(usuarioId));
     }
