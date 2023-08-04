@@ -4,7 +4,7 @@ USE `db_capiplay_video`;
 --
 -- Host: localhost    Database: db_capiplay_video
 -- ------------------------------------------------------
--- Server version	8.0.25
+-- Server version   8.0.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -200,6 +200,7 @@ CREATE TABLE `video` (
                          `caminho` varchar(255) DEFAULT NULL,
                          `curtidas` bigint DEFAULT NULL,
                          `descricao` varchar(255) DEFAULT NULL,
+                         `eh_ativo` bit(1) DEFAULT NULL,
                          `eh_reels` bit(1) DEFAULT NULL,
                          `titulo` varchar(100) DEFAULT NULL,
                          `visualizacoes` bigint DEFAULT NULL,
@@ -208,7 +209,7 @@ CREATE TABLE `video` (
                          PRIMARY KEY (`uuid`),
                          KEY `FKgml8jjonc2do2ei93xrgg6gkr` (`categoria_id`),
                          KEY `FKgcg2cwhi2ojuqb8f13sx27wgn` (`usuario_uuid`),
-                         FULLTEXT KEY `video_search` (`titulo`),
+                         FULLTEXT KEY `video` (`titulo`),
                          CONSTRAINT `FKgcg2cwhi2ojuqb8f13sx27wgn` FOREIGN KEY (`usuario_uuid`) REFERENCES `usuario` (`uuid`),
                          CONSTRAINT `FKgml8jjonc2do2ei93xrgg6gkr` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -258,4 +259,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-03 21:13:46
+-- Dump completed on 2023-08-04 19:07:05
