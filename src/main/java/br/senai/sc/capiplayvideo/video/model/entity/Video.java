@@ -31,6 +31,8 @@ public class Video {
 
     private String caminho;
 
+    private Double pontuacao;
+
     @ManyToMany
     private List<Tag> tags;
 
