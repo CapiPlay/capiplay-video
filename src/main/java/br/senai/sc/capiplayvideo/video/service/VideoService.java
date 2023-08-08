@@ -20,6 +20,8 @@ import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +36,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -64,9 +67,10 @@ public class VideoService {
 
     public void salvar(@Valid VideoDTO videoDTO) throws IOException {
         String uuid = GeradorUuidUtils.gerarUuid();
-        String diretorioEsse = diretorio + uuid + "\\";
+        String diretorioEsse = diretorio + uuid + File.separator;
         try {
-            Path caminho = Path.of(diretorioEsse);
+            System.out.println(diretorioEsse);
+            Path caminho = Paths.get(diretorioEsse);
             Files.createDirectories(caminho);
             Path arquivoTemporario = Files.createTempFile(caminho, "video_", ".mp4");
             videoDTO.video().transferTo(arquivoTemporario.toFile());

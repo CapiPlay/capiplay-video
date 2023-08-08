@@ -23,7 +23,7 @@ public class DiretorioUtils {
         return arquivos.stream()
                 .filter(caminho -> !Files.isDirectory(caminho))
                 .map(Path::toString)
-                .map(caminho -> caminho.replace("D:\\capiplay-video\\", "")).toList();
+                .map(caminho -> caminho.replace("Q:\\PUBLIC\\CORP_JGS_DESENVOLVIMENTO_RH\\ALUNOS_CENTROWEG\\08. Programacao de Sistemas\\MI 71\\Capiplay\\Videos\\", "")).toList();
     }
 
 }
