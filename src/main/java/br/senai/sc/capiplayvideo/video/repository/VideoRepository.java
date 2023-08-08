@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,8 @@ public interface VideoRepository extends JpaRepository<Video, String> {
     Optional<VideoProjection> findByUuid(String uuid);
 
     List<Video> findAllByEhReelsIsTrue();
+
+    List<VideoMiniaturaProjection> findByDataPublicacaoAfter(LocalDate data);
 
     @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3 +" +
             " (SELECT MAX(MATCH(categoria.categoria_string) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2)" +

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -33,8 +34,12 @@ public class Video {
 
     private Double pontuacao;
 
+    private LocalDate dataPublicacao;
+
     @ManyToMany
     private List<Tag> tags;
+
+    private Long duracao;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Categoria categoria;

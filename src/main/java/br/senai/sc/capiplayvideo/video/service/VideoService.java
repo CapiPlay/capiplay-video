@@ -1,6 +1,7 @@
 package br.senai.sc.capiplayvideo.video.service;
 
 import br.senai.sc.capiplayvideo.categoria.service.CategoriaService;
+import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
@@ -34,7 +35,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.util.List;
-import java.util.Random;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -140,5 +140,69 @@ public class VideoService {
 
     public void atualizarVideo(Video video) {
         repository.save(video);
+    }
+
+    public Page<VideoMiniaturaProjection> filtrarVideos(String pesquisa, Filtro filtro, Pageable pageable) {
+        List<VideoMiniaturaProjection> videosFiltrados = repository.searchBy(pesquisa);
+
+        if (filtro.getFiltroDia()) {
+            LocalDate dataPublicacao = LocalDate.now();
+            List<VideoMiniaturaProjection> videosDoDia = repository.findByDataPublicacaoAfter(dataPublicacao);
+            videosFiltrados.retainAll(videosDoDia);
+        } else if (filtro.getFiltroSemana()) {
+            LocalDate dataPublicacao = LocalDate.now().minusWeeks(1);
+            List<VideoMiniaturaProjection> videosDaSemana = repository.findByDataPublicacaoAfter(dataPublicacao);
+            videosFiltrados.retainAll(videosDaSemana);
+        } else if (filtro.getFiltroMes()) {
+            LocalDate dataPublicacao = LocalDate.now().minusMonths(1);
+            List<VideoMiniaturaProjection> videosDoMes = repository.findByDataPublicacaoAfter(dataPublicacao);
+            videosFiltrados.retainAll(videosDoMes);
+        } else if (filtro.getFiltroAno()) {
+            LocalDate dataPublicacao = LocalDate.now().minusYears(1);
+            List<VideoMiniaturaProjection> videosDoAno = repository.findByDataPublicacaoAfter(dataPublicacao);
+            videosFiltrados.retainAll(videosDoAno);
+        }
+
+        if (filtro.getFiltroMenosDe5Min()) {
+            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 0L, 5L));
+        }
+        if (filtro.getFiltroEntre5E20Min()) {
+            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 5L, 20L));
+        }
+        if (filtro.getFiltroMaisDe20Min()) {
+            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 20L, Long.MAX_VALUE));
+        }
+
+        if (filtro.getFiltroVideo()) {
+            videosFiltrados.retainAll(filtrarPorTipo(videosFiltrados, false));
+        }
+        if (filtro.getFiltroShorts()) {
+            videosFiltrados.retainAll(filtrarPorTipo(videosFiltrados, true));
+        }
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), videosFiltrados.size());
+        return new PageImpl(videosFiltrados.subList(start, end), pageable, videosFiltrados.size());
+    }
+
+    private List<VideoMiniaturaProjection> filtrarPorDuracao(List<VideoMiniaturaProjection> videos, Long duracaoMinima, Long duracaoMaxima) {
+        List<VideoMiniaturaProjection> videosFiltrados = new ArrayList<>();
+        for (VideoMiniaturaProjection video : videos) {
+            Long duracao = video.getDuracao();
+            if (duracao >= duracaoMinima && duracao <= duracaoMaxima) {
+                videosFiltrados.add(video);
+            }
+        }
+        return videosFiltrados;
+    }
+
+    private List<VideoMiniaturaProjection> filtrarPorTipo(List<VideoMiniaturaProjection> videos, Boolean tipo) {
+        List<VideoMiniaturaProjection> videosFiltrados = new ArrayList<>();
+        for (VideoMiniaturaProjection video : videos) {
+            if (video.getEhReels() == tipo) {
+                videosFiltrados.add(video);
+            }
+        }
+        return videosFiltrados;
     }
 }

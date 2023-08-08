@@ -8,7 +8,12 @@ import java.util.List;
 public interface VideoMiniaturaProjection {
 
     String getUuid();
+
     String getTitulo();
+
+    Boolean getEhReels();
+
+    Long getDuracao();
 
     @JsonIgnore
     String getCaminho();
