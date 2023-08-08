@@ -63,6 +63,8 @@ public class Video {
         this.ehReels = videoDTO.ehReels();
         this.tags = Tag.converterLista(videoDTO.tags());
         this.categoria = new Categoria(videoDTO.categoria());
+        this.duracao = videoDTO.duracao();
+        this.dataPublicacao = videoDTO.dataPublicacao();
         this.usuario = new Usuario(videoDTO.usuarioId());
     }
 
