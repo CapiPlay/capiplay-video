@@ -32,14 +32,14 @@ public class VideoController {
             @RequestParam("descricao") String descricao,
             @RequestParam("tags") List<String> tags,
             @RequestParam("categoria") String categoria,
-            @RequestParam("ehReels") Boolean ehReels,
+            @RequestParam("shorts") Boolean shorts,
             @RequestParam("video") MultipartFile video,
             @RequestParam("miniatura") MultipartFile miniatura,
             @RequestParam("duracao") Long duracao,
-            @RequestParam("ehAdulto") Boolean ehAdulto,
+            @RequestParam("restrito") Boolean restrito,
             @RequestHeader("usuarioId") String usuarioId
     ) throws IOException {
-        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, ehReels, video, miniatura, duracao, usuarioId));
+        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, shorts, video, miniatura, duracao, restrito, usuarioId));
         return ResponseEntity.ok().build();
     }
 

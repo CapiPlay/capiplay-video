@@ -118,7 +118,7 @@ public class VideoService {
     }
 
     public VideoProjection buscarReels(String uuidUsuario) {
-        List<Video> videos = repository.findAllByEhReelsIsTrue();
+        List<Video> videos = repository.findAllByShortsIsTrue();
         if (uuidUsuario == null) {
             return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
         }
@@ -147,24 +147,19 @@ public class VideoService {
         List<VideoMiniaturaProjection> videosFiltrados = repository.searchBy(pesquisa);
         if (filtro.getFiltroDia()) {
             LocalDate dataPublicacao = LocalDate.now();
-//            List<VideoMiniaturaProjection> videosDoDia = repository.findByDataPublicacaoAfter(dataPublicacao);
-                for (VideoMiniaturaProjection video : videosFiltrados) {
-                    if (video.getDataPublicacao() == dataPublicacao) {
-                        videosFiltrados.add(video);
-                    }
-                }
-//            videosFiltrados.retainAll(videosDoDia);
+            List<VideoMiniaturaProjection> videosDoDia = repository.findByPublicacaoAfter(dataPublicacao);
+            videosFiltrados.retainAll(videosDoDia);
         } else if (filtro.getFiltroSemana()) {
             LocalDate dataPublicacao = LocalDate.now().minusWeeks(1);
-            List<VideoMiniaturaProjection> videosDaSemana = repository.findByDataPublicacaoAfter(dataPublicacao);
+            List<VideoMiniaturaProjection> videosDaSemana = repository.findByPublicacaoAfter(dataPublicacao);
             videosFiltrados.retainAll(videosDaSemana);
         } else if (filtro.getFiltroMes()) {
             LocalDate dataPublicacao = LocalDate.now().minusMonths(1);
-            List<VideoMiniaturaProjection> videosDoMes = repository.findByDataPublicacaoAfter(dataPublicacao);
+            List<VideoMiniaturaProjection> videosDoMes = repository.findByPublicacaoAfter(dataPublicacao);
             videosFiltrados.retainAll(videosDoMes);
         } else if (filtro.getFiltroAno()) {
             LocalDate dataPublicacao = LocalDate.now().minusYears(1);
-            List<VideoMiniaturaProjection> videosDoAno = repository.findByDataPublicacaoAfter(dataPublicacao);
+            List<VideoMiniaturaProjection> videosDoAno = repository.findByPublicacaoAfter(dataPublicacao);
             videosFiltrados.retainAll(videosDoAno);
         }
 
@@ -203,7 +198,7 @@ public class VideoService {
     private List<VideoMiniaturaProjection> filtrarPorTipo(List<VideoMiniaturaProjection> videos, Boolean tipo) {
         List<VideoMiniaturaProjection> videosFiltrados = new ArrayList<>();
         for (VideoMiniaturaProjection video : videos) {
-            if (video.getEhReels() == tipo) {
+            if (video.getShorts().equals(tipo)) {
                 videosFiltrados.add(video);
             }
         }

@@ -9,10 +9,10 @@ public record VideoDTO(String titulo,
                        String descricao,
                        List<String> tags,
                        String categoria,
-                       Boolean ehReels,
+                       Boolean shorts,
                        MultipartFile video,
                        MultipartFile miniatura,
                        Long duracao,
-                       Boolean ehAdulto,
+                       Boolean restrito,
                        String usuarioId) {
 }
