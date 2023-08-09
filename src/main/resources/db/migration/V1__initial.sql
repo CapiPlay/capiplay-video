@@ -235,6 +235,7 @@ CREATE TABLE `video` (
   `duracao` bigint DEFAULT NULL,
   `eh_ativo` bit(1) DEFAULT NULL,
   `eh_reels` bit(1) DEFAULT NULL,
+  `eh_adulto` bit(1) DEFAULT NULL,
   `pontuacao` double DEFAULT NULL,
   `titulo` varchar(100) DEFAULT NULL,
   `visualizacoes` bigint DEFAULT NULL,
