@@ -222,44 +222,44 @@ Extensão do vídeo: mp4
 ##### Retorno:
 ```ruby
 {
-	"content": [
-		{
-			"caminhos": [
-				"caminho.png",
-				"caminho.mp4"
-			],
-			"duracao": 600,
-			"shorts": false,
-			"uuid": "uuid",
-			"publicacao": "2023-08-09",
-			"titulo": "titulo"
-		}
-	],
-	"pageable": {
-		"sort": {
-			"empty": true,
-			"sorted": false,
-			"unsorted": true
-		},
-		"offset": 0,
-		"pageNumber": 0,
-		"pageSize": 3,
-		"paged": true,
-		"unpaged": false
-	},
-	"last": true,
-	"totalPages": 1,
-	"totalElements": 2,
-	"size": 3,
-	"number": 0,
-	"sort": {
-		"empty": true,
-		"sorted": false,
-		"unsorted": true
-	},
-	"first": true,
-	"numberOfElements": 2,
-	"empty": false
+    "content": [
+        {
+            "caminhos": [
+                "caminho.png",
+                "caminho.mp4"
+            ],
+                "duracao": 600,
+                "shorts": false,
+                "uuid": "uuid",
+                "publicacao": "2023-08-09",
+                "titulo": "titulo"
+        }
+    ],
+    "pageable": {
+            "sort": {
+                "empty": true,
+                "sorted": false,
+                "unsorted": true
+            },
+            "offset": 0,
+            "pageNumber": 0,
+            "pageSize": 3,
+            "paged": true,
+            "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 2,
+    "size": 3,
+    "number": 0,
+    "sort": {
+        "empty": true,
+    	"sorted": false,
+	"unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 2,
+    "empty": false
 }
 ```
 </details>
