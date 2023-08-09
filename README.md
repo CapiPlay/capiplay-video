@@ -7,7 +7,7 @@
 ```ruby
 /api/video/criar
 ```
-##### Parâmetros/Headers requeridos:
+##### Parâmetros/Headers:
 ```ruby
 @ModelAttribute VideoDTO videoDTO,
 @RequestHeader("usuarioId") String usuarioId
@@ -25,7 +25,7 @@ Extensão do vídeo: mp4
 /api/video/buscar-completo/{uuid}
 ```
 
-##### Headers opcionais:
+##### Parâmetros/Headers:
 ```ruby
 @RequestHeader("usuarioId") String usuarioId
 ```
@@ -63,7 +63,7 @@ Extensão do vídeo: mp4
 ```ruby
 /api/video/buscar-resumido
 ```
-#####  Parâmetros requeridos:
+#####  Parâmetros/Headers:
 ```ruby
 @RequestParam("size") int size,
 @RequestParam("page") int page
@@ -117,7 +117,7 @@ Extensão do vídeo: mp4
 ```ruby
 /api/video/buscar-por-categoria
 ```
-#####  Parâmetros requeridos:
+#####  Parâmetros/Headers:
 ```ruby
 @ModelAttribute Categoria categoria,
 @RequestParam("size") int size,
@@ -173,7 +173,7 @@ Extensão do vídeo: mp4
 /api/video/buscar-reels
 ```
 
-##### Headers opcionais:
+##### Parâmetros/Headers:
 ```ruby
 @RequestHeader("usuarioId") String usuarioId
 ```
@@ -212,7 +212,7 @@ Extensão do vídeo: mp4
 /api/video/filtro/{pesquisa}
 ```
 
-##### Headers opcionais:
+##### Parâmetros/Headers:
 ```ruby
 @ModelAttribute FiltroDTO filtroDTO,
 @RequestParam("page") int page,
@@ -274,7 +274,7 @@ Extensão do vídeo: mp4
 /api/pesquisa/{pesquisa}
 ```
 
-##### Headers requeridos:
+##### Parâmetros/Headers:
 ```ruby
 @RequestHeader("usuarioId") String usuarioId
 ```
@@ -302,7 +302,7 @@ Extensão do vídeo: mp4
 /api/usuario/historico-pesquisa
 ```
 
-##### Headers requeridos:
+##### Parâmetros/Headers:
 ```ruby
 @RequestHeader("usuarioId") String usuarioId
 ```
