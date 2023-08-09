@@ -20,8 +20,6 @@ import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -148,11 +146,15 @@ public class VideoService {
 
     public Page<VideoMiniaturaProjection> filtrarVideos(String pesquisa, Filtro filtro, Pageable pageable) {
         List<VideoMiniaturaProjection> videosFiltrados = repository.searchBy(pesquisa);
-
         if (filtro.getFiltroDia()) {
             LocalDate dataPublicacao = LocalDate.now();
-            List<VideoMiniaturaProjection> videosDoDia = repository.findByDataPublicacaoAfter(dataPublicacao);
-            videosFiltrados.retainAll(videosDoDia);
+//            List<VideoMiniaturaProjection> videosDoDia = repository.findByDataPublicacaoAfter(dataPublicacao);
+                for (VideoMiniaturaProjection video : videosFiltrados) {
+                    if (video.getDataPublicacao() == dataPublicacao) {
+                        videosFiltrados.add(video);
+                    }
+                }
+//            videosFiltrados.retainAll(videosDoDia);
         } else if (filtro.getFiltroSemana()) {
             LocalDate dataPublicacao = LocalDate.now().minusWeeks(1);
             List<VideoMiniaturaProjection> videosDaSemana = repository.findByDataPublicacaoAfter(dataPublicacao);
@@ -168,13 +170,13 @@ public class VideoService {
         }
 
         if (filtro.getFiltroMenosDe5Min()) {
-            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 0L, 5L));
+            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 1L, 300L));
         }
         if (filtro.getFiltroEntre5E20Min()) {
-            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 5L, 20L));
+            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 300L, 1200L));
         }
         if (filtro.getFiltroMaisDe20Min()) {
-            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 20L, Long.MAX_VALUE));
+            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 1200L, Long.MAX_VALUE));
         }
 
         if (filtro.getFiltroVideo()) {
@@ -183,7 +185,6 @@ public class VideoService {
         if (filtro.getFiltroShorts()) {
             videosFiltrados.retainAll(filtrarPorTipo(videosFiltrados, true));
         }
-
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), videosFiltrados.size());
         return new PageImpl(videosFiltrados.subList(start, end), pageable, videosFiltrados.size());

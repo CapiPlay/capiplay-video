@@ -38,7 +38,7 @@ public class VideoController {
             @RequestParam("duracao") Long duracao,
             @RequestHeader("usuarioId") String usuarioId
     ) throws IOException {
-        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, ehReels, video, miniatura, LocalDate.now(), duracao, usuarioId));
+        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, ehReels, video, miniatura, duracao, usuarioId));
         return ResponseEntity.ok().build();
     }
 
