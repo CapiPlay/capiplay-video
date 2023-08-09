@@ -55,7 +55,7 @@ public class Video {
 
     private Boolean restrito;
 
-    public Video(String uuid, VideoDTO videoDTO, String caminho) {
+    public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
         this.descricao = videoDTO.descricao();

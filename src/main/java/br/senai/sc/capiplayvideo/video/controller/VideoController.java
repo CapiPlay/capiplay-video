@@ -7,6 +7,7 @@ import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -28,30 +29,26 @@ public class VideoController {
 
     @PostMapping("/criar")
     public ResponseEntity<Void> criar(
-            @RequestParam("titulo") String titulo,
-            @RequestParam("descricao") String descricao,
-            @RequestParam("tags") List<String> tags,
-            @RequestParam("categoria") String categoria,
-            @RequestParam("shorts") Boolean shorts,
-            @RequestParam("video") MultipartFile video,
-            @RequestParam("miniatura") MultipartFile miniatura,
-            @RequestParam("duracao") Long duracao,
-            @RequestParam("restrito") Boolean restrito,
+            @ModelAttribute VideoDTO videoDTO,
             @RequestHeader("usuarioId") String usuarioId
     ) throws IOException {
-        service.salvar(new VideoDTO(titulo, descricao, tags, categoria, shorts, video, miniatura, duracao, restrito, usuarioId));
+        service.salvar(videoDTO, usuarioId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/buscar-completo/{uuid}")
-    public ResponseEntity<VideoProjection> buscarUm(@PathVariable String uuid, @RequestHeader(value = "usuarioId", required = false) String usuarioId) {
+    public ResponseEntity<VideoProjection> buscarUm(
+            @PathVariable String uuid,
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
+    ) {
         return ResponseEntity.ok(service.buscarUm(uuid, usuarioId));
     }
 
     @GetMapping("/buscar-resumido")
     public Page<VideoMiniaturaProjection> buscarTodos(
             @RequestParam("size") int size,
-            @RequestParam("page") int page) {
+            @RequestParam("page") int page
+    ) {
         return service.buscarTodos(PageRequest.of(page, size));
     }
 
@@ -59,32 +56,27 @@ public class VideoController {
     public Page<VideoMiniaturaProjection> buscarPorCategoria(
             @RequestParam("categoria") Categoria categoria,
             @RequestParam("size") int size,
-            @RequestParam("page") int page) {
+            @RequestParam("page") int page
+    ) {
         return service.buscarPorCategoria(PageRequest.of(page, size), categoria);
     }
 
     @GetMapping("/buscar-reels")
-    public ResponseEntity<VideoProjection> buscarReels(@RequestHeader(value = "usuarioId", required = false) String usuarioId) {
+    public ResponseEntity<VideoProjection> buscarReels(
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
+    ) {
         return ResponseEntity.ok(service.buscarReels(usuarioId));
     }
 
     @GetMapping("/filtro/{pesquisa}")
     public ResponseEntity<Page<VideoMiniaturaProjection>> filtrarVideos(
             @PathVariable String pesquisa,
-            @RequestParam Boolean filtroDia,
-            @RequestParam Boolean filtroSemana,
-            @RequestParam Boolean filtroMes,
-            @RequestParam Boolean filtroAno,
-            @RequestParam Boolean filtroMenosDe5Min,
-            @RequestParam Boolean filtroEntre5E20Min,
-            @RequestParam Boolean filtroMaisDe20Min,
-            @RequestParam Boolean filtroVideo,
-            @RequestParam Boolean filtroShorts,
+            @ModelAttribute FiltroDTO filtroDTO,
             @RequestParam("page") int page,
-            @RequestParam("size") int size) {
-
+            @RequestParam("size") int size
+    ) {
         Filtro filtro = new Filtro();
-        BeanUtils.copyProperties(new FiltroDTO(filtroDia, filtroSemana, filtroMes, filtroAno, filtroMenosDe5Min, filtroEntre5E20Min, filtroMaisDe20Min, filtroVideo, filtroShorts), filtro);
+        BeanUtils.copyProperties(filtroDTO, filtro);
         return ResponseEntity.ok(service.filtrarVideos(pesquisa, filtro, PageRequest.of(page, size)));
     }
 }
