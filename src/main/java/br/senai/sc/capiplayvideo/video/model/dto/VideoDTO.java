@@ -15,5 +15,6 @@ public record VideoDTO(String titulo,
                        MultipartFile miniatura,
                        LocalDate dataPublicacao,
                        Long duracao,
+                       Boolean ehAdulto,
                        String usuarioId) {
 }
