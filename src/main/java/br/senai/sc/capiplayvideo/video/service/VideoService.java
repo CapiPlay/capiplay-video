@@ -67,7 +67,6 @@ public class VideoService {
         String uuid = GeradorUuidUtils.gerarUuid();
         String diretorioEsse = diretorio + uuid + File.separator;
         try {
-            System.out.println(diretorioEsse);
             Path caminho = Paths.get(diretorioEsse);
             Files.createDirectories(caminho);
             Path arquivoTemporario = Files.createTempFile(caminho, "video_", ".mp4");
@@ -77,8 +76,8 @@ public class VideoService {
                         videoDTO.miniatura().getInputStream(),
                         resolucaoEnum.getLargura(),
                         resolucaoEnum.getAltura());
-                arquivoTemporario = Files.createTempFile(caminho, "miniatura_" + resolucaoEnum + "_", ".jpeg");
-                ImageIO.write(imagemRedimensionada, "JPEG", arquivoTemporario.toFile());
+                arquivoTemporario = Files.createTempFile(caminho, "miniatura_" + resolucaoEnum + "_", ".png");
+                ImageIO.write(imagemRedimensionada, "PNG", arquivoTemporario.toFile());
             }
             Video video = new Video(uuid, videoDTO, diretorioEsse);
             video.getTags().forEach(tagService::salvar);

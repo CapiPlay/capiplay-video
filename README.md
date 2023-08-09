@@ -18,6 +18,9 @@
 @RequestParam("miniatura") MultipartFile miniatura
 @RequestHeader("usuarioId") String usuarioId
 ```
+##### Observações:
+Extensão da imagem: png </br>
+Extensão do vídeo: mp4
 </details>
 
 <details>

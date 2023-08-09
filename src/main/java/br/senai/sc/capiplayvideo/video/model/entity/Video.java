@@ -55,6 +55,8 @@ public class Video {
 
     private Boolean ehAtivo = true;
 
+    private Boolean ehAdulto;
+
     public Video(String uuid, VideoDTO videoDTO, String caminho) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
@@ -65,6 +67,7 @@ public class Video {
         this.categoria = new Categoria(videoDTO.categoria());
         this.duracao = videoDTO.duracao();
         this.dataPublicacao = LocalDate.now();
+        this.ehAdulto = videoDTO.ehAdulto();
         this.usuario = new Usuario(videoDTO.usuarioId());
     }
 
