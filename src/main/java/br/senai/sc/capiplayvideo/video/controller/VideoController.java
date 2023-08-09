@@ -54,7 +54,7 @@ public class VideoController {
 
     @GetMapping("/buscar-por-categoria")
     public Page<VideoMiniaturaProjection> buscarPorCategoria(
-            @RequestParam("categoria") Categoria categoria,
+            @ModelAttribute Categoria categoria,
             @RequestParam("size") int size,
             @RequestParam("page") int page
     ) {

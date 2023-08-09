@@ -9,13 +9,7 @@
 ```
 ##### Parâmetros/Headers requeridos:
 ```ruby
-@RequestParam("titulo") String titulo,
-@RequestParam("descricao") String descricao,
-@RequestParam("tags") List<String> tags,
-@RequestParam("categoria") String categoria,
-@RequestParam("ehReels") Boolean ehReels,
-@RequestParam("video") MultipartFile video,
-@RequestParam("miniatura") MultipartFile miniatura
+@ModelAttribute VideoDTO videoDTO,
 @RequestHeader("usuarioId") String usuarioId
 ```
 ##### Observações:
@@ -125,7 +119,7 @@ Extensão do vídeo: mp4
 ```
 #####  Parâmetros requeridos:
 ```ruby
-@RequestParam("categoria") Categoria categoria,
+@ModelAttribute Categoria categoria,
 @RequestParam("size") int size,
 @RequestParam("page") int page
 ```
@@ -206,6 +200,66 @@ Extensão do vídeo: mp4
     "titulo": "titulo",
     "descricao": "descricao",
     "uuid": "uuid"
+}
+```
+</details>
+
+<details>
+<summary>Filtrar Vídeos</summary>
+
+##### Mapeamento:
+```ruby
+/api/video/filtro/{pesquisa}
+```
+
+##### Headers opcionais:
+```ruby
+@ModelAttribute FiltroDTO filtroDTO,
+@RequestParam("page") int page,
+@RequestParam("size") int size
+```
+
+##### Retorno:
+```ruby
+{
+	"content": [
+		{
+			"caminhos": [
+				"caminho.png",
+				"caminho.mp4"
+			],
+			"duracao": 600,
+			"shorts": false,
+			"uuid": "uuid",
+			"publicacao": "2023-08-09",
+			"titulo": "titulo"
+		}
+	],
+	"pageable": {
+		"sort": {
+			"empty": true,
+			"sorted": false,
+			"unsorted": true
+		},
+		"offset": 0,
+		"pageNumber": 0,
+		"pageSize": 3,
+		"paged": true,
+		"unpaged": false
+	},
+	"last": true,
+	"totalPages": 1,
+	"totalElements": 2,
+	"size": 3,
+	"number": 0,
+	"sort": {
+		"empty": true,
+		"sorted": false,
+		"unsorted": true
+	},
+	"first": true,
+	"numberOfElements": 2,
+	"empty": false
 }
 ```
 </details>

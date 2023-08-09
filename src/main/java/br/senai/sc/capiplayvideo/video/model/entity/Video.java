@@ -66,7 +66,7 @@ public class Video {
         this.duracao = videoDTO.duracao();
         this.publicacao = LocalDate.now();
         this.restrito = videoDTO.restrito();
-        this.usuario = new Usuario(videoDTO.usuarioId());
+        this.usuario = new Usuario(usuarioId);
     }
 
     public Video(String uuid){
