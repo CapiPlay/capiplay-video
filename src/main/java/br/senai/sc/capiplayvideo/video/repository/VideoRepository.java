@@ -23,9 +23,9 @@ public interface VideoRepository extends JpaRepository<Video, String> {
 
     Optional<VideoProjection> findByUuid(String uuid);
 
-    List<Video> findAllByEhReelsIsTrue();
+    List<Video> findAllByShortsIsTrue();
 
-    List<VideoMiniaturaProjection> findByDataPublicacaoAfter(LocalDate data);
+    List<VideoMiniaturaProjection> findByPublicacaoAfter(LocalDate data);
 
     // ver o bagulho de somar pontuacao com o totalScore
     @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3 +" +

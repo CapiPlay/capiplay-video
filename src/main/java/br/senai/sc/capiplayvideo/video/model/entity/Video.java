@@ -1,11 +1,9 @@
 package br.senai.sc.capiplayvideo.video.model.entity;
 
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
-import br.senai.sc.capiplayvideo.engajamento.amqp.events.VideoAtualizadoEvent;
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
-import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -34,7 +32,7 @@ public class Video {
 
     private Double pontuacao;
 
-    private LocalDate dataPublicacao;
+    private LocalDate publicacao;
 
     @ManyToMany
     private List<Tag> tags;
@@ -44,7 +42,7 @@ public class Video {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Categoria categoria;
 
-    private Boolean ehReels;
+    private Boolean shorts;
 
     private Long curtidas;
 
@@ -53,22 +51,22 @@ public class Video {
     @ManyToOne
     private Usuario usuario;
 
-    private Boolean ehAtivo = true;
+    private Boolean inativo = false;
 
-    private Boolean ehAdulto;
+    private Boolean restrito;
 
     public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
         this.descricao = videoDTO.descricao();
         this.caminho = caminho;
-        this.ehReels = videoDTO.ehReels();
+        this.shorts = videoDTO.shorts();
         this.tags = Tag.converterLista(videoDTO.tags());
         this.categoria = new Categoria(videoDTO.categoria());
         this.duracao = videoDTO.duracao();
-        this.dataPublicacao = LocalDate.now();
-        this.ehAdulto = videoDTO.ehAdulto();
-        this.usuario = new Usuario(usuarioId);
+        this.publicacao = LocalDate.now();
+        this.restrito = videoDTO.restrito();
+        this.usuario = new Usuario(videoDTO.usuarioId());
     }
 
     public Video(String uuid){

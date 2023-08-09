@@ -12,11 +12,11 @@ public interface VideoMiniaturaProjection {
 
     String getTitulo();
 
-    Boolean getEhReels();
+    Boolean getShorts();
 
     Long getDuracao();
 
-    LocalDate getDataPublicacao();
+    LocalDate getPublicacao();
 
     @JsonIgnore
     String getCaminho();
