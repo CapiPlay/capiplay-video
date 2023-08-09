@@ -16,7 +16,12 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
+
 import jakarta.validation.Valid;
+import net.bramp.ffmpeg.FFprobe;
+import net.bramp.ffmpeg.probe.FFmpegProbeResult;
+import net.bramp.ffmpeg.probe.FFmpegStream;
+
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,16 +30,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.nio.file.Paths;
+
+import java.text.DecimalFormat;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,9 +59,12 @@ public class VideoService {
     private String diretorio;
 
     @Autowired
-    public VideoService(VideoRepository repository, TagService tagService,
-                        CategoriaService categoriaService, UsuarioService usuarioService,
-                        UsuarioVisualizaVideoService usuarioVisualizaVideoService) {
+    public VideoService(VideoRepository repository,
+                        TagService tagService,
+                        CategoriaService categoriaService,
+                        UsuarioService usuarioService,
+                        UsuarioVisualizaVideoService usuarioVisualizaVideoService
+    ) {
         this.repository = repository;
         this.tagService = tagService;
         this.categoriaService = categoriaService;
@@ -63,7 +72,7 @@ public class VideoService {
         this.usuarioVisualizaVideoService = usuarioVisualizaVideoService;
     }
 
-    public void salvar(@Valid VideoDTO videoDTO) throws IOException {
+    public void salvar(@Valid VideoDTO videoDTO, String usuarioId) throws IOException {
         String uuid = GeradorUuidUtils.gerarUuid();
         String diretorioEsse = diretorio + uuid + File.separator;
         try {
@@ -79,7 +88,7 @@ public class VideoService {
                 arquivoTemporario = Files.createTempFile(caminho, "miniatura_" + resolucaoEnum + "_", ".png");
                 ImageIO.write(imagemRedimensionada, "PNG", arquivoTemporario.toFile());
             }
-            Video video = new Video(uuid, videoDTO, diretorioEsse);
+            Video video = new Video(uuid, videoDTO, diretorioEsse, usuarioId);
             video.getTags().forEach(tagService::salvar);
             categoriaService.salvar(video.getCategoria());
             repository.save(video);
@@ -148,11 +157,11 @@ public class VideoService {
         if (filtro.getFiltroDia()) {
             LocalDate dataPublicacao = LocalDate.now();
 //            List<VideoMiniaturaProjection> videosDoDia = repository.findByDataPublicacaoAfter(dataPublicacao);
-                for (VideoMiniaturaProjection video : videosFiltrados) {
-                    if (video.getDataPublicacao() == dataPublicacao) {
-                        videosFiltrados.add(video);
-                    }
+            for (VideoMiniaturaProjection video : videosFiltrados) {
+                if (video.getDataPublicacao() == dataPublicacao) {
+                    videosFiltrados.add(video);
                 }
+            }
 //            videosFiltrados.retainAll(videosDoDia);
         } else if (filtro.getFiltroSemana()) {
             LocalDate dataPublicacao = LocalDate.now().minusWeeks(1);
