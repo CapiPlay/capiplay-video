@@ -116,12 +116,28 @@ public class VideoService {
         return bufferedResizedImage;
     }
 
-    public Page<VideoMiniaturaProjection> buscarTodos(Pageable pageable) {
-        return repository.findAllBy(pageable);
+    public List<VideoMiniaturaProjection> buscarTodos(Pageable pageable, String usuarioId) {
+        List<VideoMiniaturaProjection> videos = repository.findAllBy(pageable);
+        List<VideoMiniaturaProjection> videosNaoAssistidos = new ArrayList<>();
+        Usuario usuario = usuarioService.buscarUm(usuarioId);
+        for (VideoMiniaturaProjection video : videos) {
+            if(!usuario.getHistoricoVideo().contains(video)) {
+                videosNaoAssistidos.add(video);
+            }
+        }
+        return videosNaoAssistidos;
     }
 
-    public Page<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, CategoriasEnum categoria) {
-        return repository.findAllByCategoria_categoriaString(categoria.name(), pageable);
+    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, CategoriasEnum categoria, String usuarioId) {
+        List<VideoMiniaturaProjection> videos = repository.findAllByCategoria_categoriaString(categoria.name(), pageable);
+        List<VideoMiniaturaProjection> videosNaoAssistidos = new ArrayList<>();
+        Usuario usuario = usuarioService.buscarUm(usuarioId);
+        for (VideoMiniaturaProjection video : videos) {
+            if(!usuario.getHistoricoVideo().contains(video)) {
+                videosNaoAssistidos.add(video);
+            }
+        }
+        return videosNaoAssistidos;
     }
 
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
@@ -162,8 +178,7 @@ public class VideoService {
         repository.save(video);
     }
 
-    public Page<VideoMiniaturaProjection> filtrarVideos(String pesquisa, Filtro filtro, Pageable pageable) {
-        System.out.printf("\n\n\n"+filtro+"\n\n\n");
+    public List<VideoMiniaturaProjection> filtrarVideos(String pesquisa, Filtro filtro, Pageable pageable, String usuarioId) {
         List<VideoMiniaturaProjection> videosFiltrados = repository.searchByFiltro(
                 pesquisa,
                 filtro.getFiltroDia(),
@@ -174,35 +189,15 @@ public class VideoService {
                 filtro.getFiltroEntre5E20Min(),
                 filtro.getFiltroMaisDe20Min(),
                 filtro.getFiltroVideo(),
-                filtro.getFiltroShorts());
-
-        for (VideoMiniaturaProjection videosFiltrado : videosFiltrados) {
-            System.out.printf("\n\n\n" + videosFiltrado.getTitulo() + "\n\n\n");
-        }
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), videosFiltrados.size());
-        return new PageImpl(videosFiltrados.subList(start, end), pageable, videosFiltrados.size());
-    }
-
-    private List<VideoMiniaturaProjection> filtrarPorDuracao(List<VideoMiniaturaProjection> videos, Long duracaoMinima, Long duracaoMaxima) {
-        List<VideoMiniaturaProjection> videosFiltrados = new ArrayList<>();
-        for (VideoMiniaturaProjection video : videos) {
-            Long duracao = video.getDuracao();
-            if (duracao >= duracaoMinima && duracao <= duracaoMaxima) {
-                videosFiltrados.add(video);
+                filtro.getFiltroShorts(),
+                pageable);
+        List<VideoMiniaturaProjection> videosNaoAssistidos = new ArrayList<>();
+        Usuario usuario = usuarioService.buscarUm(usuarioId);
+        for (VideoMiniaturaProjection video : videosFiltrados) {
+            if(!usuario.getHistoricoVideo().contains(video)) {
+                videosNaoAssistidos.add(video);
             }
         }
-        return videosFiltrados;
-    }
-
-    private List<VideoMiniaturaProjection> filtrarPorTipo(List<VideoMiniaturaProjection> videos, Boolean tipo) {
-        List<VideoMiniaturaProjection> videosFiltrados = new ArrayList<>();
-        for (VideoMiniaturaProjection video : videos) {
-            if (video.getShorts().equals(tipo)) {
-                videosFiltrados.add(video);
-            }
-        }
-        return videosFiltrados;
+        return videosNaoAssistidos;
     }
 }

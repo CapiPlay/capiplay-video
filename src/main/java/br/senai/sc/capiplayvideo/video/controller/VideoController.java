@@ -46,20 +46,22 @@ public class VideoController {
     }
 
     @GetMapping("/buscar-resumido")
-    public Page<VideoMiniaturaProjection> buscarTodos(
+    public List<VideoMiniaturaProjection> buscarTodos(
             @RequestParam("size") int size,
-            @RequestParam("page") int page
+            @RequestParam("page") int page,
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return service.buscarTodos(PageRequest.of(page, size));
+        return service.buscarTodos(PageRequest.of(page, size), usuarioId);
     }
 
     @GetMapping("/buscar-por-categoria")
-    public Page<VideoMiniaturaProjection> buscarPorCategoria(
+    public List<VideoMiniaturaProjection> buscarPorCategoria(
             @ModelAttribute CategoriasEnum categoria,
             @RequestParam("size") int size,
-            @RequestParam("page") int page
+            @RequestParam("page") int page,
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return service.buscarPorCategoria(PageRequest.of(page, size), categoria);
+        return service.buscarPorCategoria(PageRequest.of(page, size), categoria, usuarioId);
     }
 
     @GetMapping("/buscar-reels")
@@ -70,14 +72,15 @@ public class VideoController {
     }
 
     @GetMapping("/filtro/{pesquisa}")
-    public ResponseEntity<Page<VideoMiniaturaProjection>> filtrarVideos(
+    public ResponseEntity<List<VideoMiniaturaProjection>> filtrarVideos(
             @PathVariable String pesquisa,
             @ModelAttribute FiltroDTO filtroDTO,
             @RequestParam("page") int page,
-            @RequestParam("size") int size
+            @RequestParam("size") int size,
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
         Filtro filtro = new Filtro();
         BeanUtils.copyProperties(filtroDTO, filtro);
-        return ResponseEntity.ok(service.filtrarVideos(pesquisa, filtro, PageRequest.of(page, size)));
+        return ResponseEntity.ok(service.filtrarVideos(pesquisa, filtro, PageRequest.of(page, size), usuarioId));
     }
 }

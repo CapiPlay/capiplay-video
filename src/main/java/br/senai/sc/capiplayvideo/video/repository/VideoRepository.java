@@ -18,9 +18,9 @@ import java.util.Optional;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, String> {
 
-    Page<VideoMiniaturaProjection> findAllBy(Pageable pageable);
+    List<VideoMiniaturaProjection> findAllBy(Pageable pageable);
 
-    Page<VideoMiniaturaProjection> findAllByCategoria_categoriaString(String categoria, Pageable pageable);
+    List<VideoMiniaturaProjection> findAllByCategoria_categoriaString(String categoria, Pageable pageable);
 
     Optional<VideoProjection> findByUuid(String uuid);
 
@@ -64,5 +64,6 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             @Param("filtroEntre5E20Min") Boolean filtroEntre5E20Min,
             @Param("filtroMaisDe20Min") Boolean filtroMaisDe20Min,
             @Param("filtroVideo") Boolean filtroVideo,
-            @Param("filtroShorts") Boolean filtroShorts);
+            @Param("filtroShorts") Boolean filtroShorts,
+            Pageable pageable);
 }
