@@ -18,6 +18,10 @@ public interface VideoMiniaturaProjection {
 
     LocalDate getPublicacao();
 
+    Long getVisualizacoes();
+
+    Long getCurtidas();
+
     @JsonIgnore
     String getCaminho();
 
