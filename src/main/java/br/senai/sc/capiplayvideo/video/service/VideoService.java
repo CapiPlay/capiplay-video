@@ -1,5 +1,6 @@
 package br.senai.sc.capiplayvideo.video.service;
 
+import br.senai.sc.capiplayvideo.categoria.model.enums.CategoriasEnum;
 import br.senai.sc.capiplayvideo.categoria.service.CategoriaService;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
@@ -119,8 +120,8 @@ public class VideoService {
         return repository.findAllBy(pageable);
     }
 
-    public Page<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, Categoria categoria) {
-        return repository.findAllByCategoria(categoria, pageable);
+    public Page<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, CategoriasEnum categoria) {
+        return repository.findAllByCategoria_categoriaString(categoria.name(), pageable);
     }
 
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {

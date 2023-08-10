@@ -19,7 +19,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
 
     Page<VideoMiniaturaProjection> findAllBy(Pageable pageable);
 
-    Page<VideoMiniaturaProjection> findAllByCategoria(Categoria categoria, Pageable pageable);
+    Page<VideoMiniaturaProjection> findAllByCategoria_categoriaString(String categoria, Pageable pageable);
 
     Optional<VideoProjection> findByUuid(String uuid);
 
