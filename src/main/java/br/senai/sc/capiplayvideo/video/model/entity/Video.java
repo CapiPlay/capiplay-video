@@ -55,7 +55,7 @@ public class Video {
 
     private Boolean restrito;
 
-    public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId) {
+    public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId, Long duracao) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
         this.descricao = videoDTO.descricao();
@@ -63,7 +63,7 @@ public class Video {
         this.shorts = videoDTO.shorts();
         this.tags = Tag.converterLista(videoDTO.tags());
         this.categoria = new Categoria(videoDTO.categoria());
-        this.duracao = videoDTO.duracao();
+        this.duracao = duracao;
         this.publicacao = LocalDate.now();
         this.restrito = videoDTO.restrito();
         this.usuario = new Usuario(usuarioId);

@@ -68,9 +68,9 @@
         </dependency>
 
         <dependency>
-            <groupId>net.bramp.ffmpeg</groupId>
-            <artifactId>ffmpeg</artifactId>
-            <version>0.7.0</version>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec-streaming</artifactId>
+            <version>0.2.3</version>
         </dependency>
     </dependencies>
 
