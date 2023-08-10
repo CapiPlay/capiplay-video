@@ -162,41 +162,23 @@ public class VideoService {
     }
 
     public Page<VideoMiniaturaProjection> filtrarVideos(String pesquisa, Filtro filtro, Pageable pageable) {
-        List<VideoMiniaturaProjection> videosFiltrados = repository.searchBy(pesquisa);
-        if (filtro.getFiltroDia()) {
-            LocalDate dataPublicacao = LocalDate.now();
-            List<VideoMiniaturaProjection> videosDoDia = repository.findByPublicacaoAfter(dataPublicacao);
-            videosFiltrados.retainAll(videosDoDia);
-        } else if (filtro.getFiltroSemana()) {
-            LocalDate dataPublicacao = LocalDate.now().minusWeeks(1);
-            List<VideoMiniaturaProjection> videosDaSemana = repository.findByPublicacaoAfter(dataPublicacao);
-            videosFiltrados.retainAll(videosDaSemana);
-        } else if (filtro.getFiltroMes()) {
-            LocalDate dataPublicacao = LocalDate.now().minusMonths(1);
-            List<VideoMiniaturaProjection> videosDoMes = repository.findByPublicacaoAfter(dataPublicacao);
-            videosFiltrados.retainAll(videosDoMes);
-        } else if (filtro.getFiltroAno()) {
-            LocalDate dataPublicacao = LocalDate.now().minusYears(1);
-            List<VideoMiniaturaProjection> videosDoAno = repository.findByPublicacaoAfter(dataPublicacao);
-            videosFiltrados.retainAll(videosDoAno);
+        System.out.printf("\n\n\n"+filtro+"\n\n\n");
+        List<VideoMiniaturaProjection> videosFiltrados = repository.searchByFiltro(
+                pesquisa,
+                filtro.getFiltroDia(),
+                filtro.getFiltroSemana(),
+                filtro.getFiltroMes(),
+                filtro.getFiltroAno(),
+                filtro.getFiltroMenosDe5Min(),
+                filtro.getFiltroEntre5E20Min(),
+                filtro.getFiltroMaisDe20Min(),
+                filtro.getFiltroVideo(),
+                filtro.getFiltroShorts());
+
+        for (VideoMiniaturaProjection videosFiltrado : videosFiltrados) {
+            System.out.printf("\n\n\n" + videosFiltrado.getTitulo() + "\n\n\n");
         }
 
-        if (filtro.getFiltroMenosDe5Min()) {
-            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 1L, 300L));
-        }
-        if (filtro.getFiltroEntre5E20Min()) {
-            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 300L, 1200L));
-        }
-        if (filtro.getFiltroMaisDe20Min()) {
-            videosFiltrados.retainAll(filtrarPorDuracao(videosFiltrados, 1200L, Long.MAX_VALUE));
-        }
-
-        if (filtro.getFiltroVideo()) {
-            videosFiltrados.retainAll(filtrarPorTipo(videosFiltrados, false));
-        }
-        if (filtro.getFiltroShorts()) {
-            videosFiltrados.retainAll(filtrarPorTipo(videosFiltrados, true));
-        }
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), videosFiltrados.size());
         return new PageImpl(videosFiltrados.subList(start, end), pageable, videosFiltrados.size());
