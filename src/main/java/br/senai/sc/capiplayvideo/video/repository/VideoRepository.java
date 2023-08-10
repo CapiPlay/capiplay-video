@@ -27,13 +27,12 @@ public interface VideoRepository extends JpaRepository<Video, String> {
 
     List<VideoMiniaturaProjection> findByPublicacaoAfter(LocalDate data);
 
-    // ver o bagulho de somar pontuacao com o totalScore
-    @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3 +" +
-            " (SELECT MAX(MATCH(categoria.categoria_string) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2)" +
+    @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3000 +" +
+            " (SELECT MAX(MATCH(categoria.categoria_string) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2000)" +
             " FROM categoria WHERE video.categoria_id = categoria.id) +" +
-            " (SELECT MAX(MATCH(tag.tag) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE)) " +
-            "FROM tag, video_tags WHERE video_tags.tags_tag = tag.tag and video_tags.video_uuid = video.uuid)" +
-            " TotalScore FROM video GROUP BY video.titulo HAVING TotalScore > 0 ORDER BY TotalScore DESC;",
+            " (SELECT MAX(MATCH(tag.tag) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 1000) " +
+            "FROM tag, video_tags WHERE video_tags.tags_tag = tag.tag and video_tags.video_uuid = video.uuid) + (video.pontuacao * 4)" +
+            " TotalScore FROM video GROUP BY video.titulo;",
             nativeQuery = true)
     List<VideoMiniaturaProjection> searchBy(String searchTerm);
 }
