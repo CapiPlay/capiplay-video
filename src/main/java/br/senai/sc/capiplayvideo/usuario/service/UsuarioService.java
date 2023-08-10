@@ -3,7 +3,6 @@ package br.senai.sc.capiplayvideo.usuario.service;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Pesquisa;
 import br.senai.sc.capiplayvideo.pesquisa.repository.PesquisaRepository;
-import br.senai.sc.capiplayvideo.pesquisa.service.PesquisaService;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.usuario.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
@@ -16,8 +15,8 @@ import java.util.*;
 @AllArgsConstructor
 public class UsuarioService {
 
-    private UsuarioRepository repository;
-    private PesquisaRepository pesquisaRepository;
+    private final UsuarioRepository repository;
+    private final PesquisaRepository pesquisaRepository;
 
     public void salvar(Usuario usuario) {
         repository.save(usuario);

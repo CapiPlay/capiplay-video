@@ -1,6 +1,7 @@
 package br.senai.sc.capiplayvideo.video.controller;
 
 import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
+import br.senai.sc.capiplayvideo.categoria.model.enums.CategoriasEnum;
 import br.senai.sc.capiplayvideo.pesquisa.model.dto.FiltroDTO;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
@@ -54,7 +55,7 @@ public class VideoController {
 
     @GetMapping("/buscar-por-categoria")
     public Page<VideoMiniaturaProjection> buscarPorCategoria(
-            @ModelAttribute Categoria categoria,
+            @ModelAttribute CategoriasEnum categoria,
             @RequestParam("size") int size,
             @RequestParam("page") int page
     ) {
