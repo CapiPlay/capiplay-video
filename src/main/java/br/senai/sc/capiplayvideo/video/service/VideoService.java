@@ -18,11 +18,11 @@ import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 
 import jakarta.validation.Valid;
-import net.bramp.ffmpeg.FFprobe;
-import net.bramp.ffmpeg.probe.FFmpegProbeResult;
-import net.bramp.ffmpeg.probe.FFmpegStream;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.jcodec.containers.mp4.MP4Util;
+import org.jcodec.containers.mp4.boxes.Box;
+import org.jcodec.containers.mp4.boxes.MovieHeaderBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -40,7 +40,6 @@ import java.nio.file.Path;
 
 import java.nio.file.Paths;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -80,6 +79,8 @@ public class VideoService {
             Files.createDirectories(caminho);
             Path arquivoTemporario = Files.createTempFile(caminho, "video_", ".mp4");
             videoDTO.video().transferTo(arquivoTemporario.toFile());
+            MovieHeaderBox mvhd = findMovieHeader(arquivoTemporario.toFile());
+            Long durationInSeconds = mvhd.getDuration() / mvhd.getTimescale();
             for (ResolucaoEnum resolucaoEnum : ResolucaoEnum.values()) {
                 BufferedImage imagemRedimensionada = redimensionarImagem(
                         videoDTO.miniatura().getInputStream(),
@@ -88,7 +89,7 @@ public class VideoService {
                 arquivoTemporario = Files.createTempFile(caminho, "miniatura_" + resolucaoEnum + "_", ".png");
                 ImageIO.write(imagemRedimensionada, "PNG", arquivoTemporario.toFile());
             }
-            Video video = new Video(uuid, videoDTO, diretorioEsse, usuarioId);
+            Video video = new Video(uuid, videoDTO, diretorioEsse, usuarioId, durationInSeconds);
             video.getTags().forEach(tagService::salvar);
             categoriaService.salvar(video.getCategoria());
             repository.save(video);
@@ -96,6 +97,14 @@ public class VideoService {
             FileUtils.deleteDirectory(new File(diretorioEsse));
             throw e;
         }
+    }
+
+    private static MovieHeaderBox findMovieHeader(File f) throws IOException {
+        for (Box box : MP4Util.createRefMovieFromFile(f).getBoxes()) {
+            if (box instanceof MovieHeaderBox)
+                return (MovieHeaderBox) box;
+        }
+        return null;
     }
 
     private BufferedImage redimensionarImagem(InputStream inputStream, int largura, int altura) throws IOException {
