@@ -123,6 +123,10 @@ public class VideoService {
         for (VideoMiniaturaProjection video : videos) {
             if(!usuario.getHistoricoVideo().contains(video)) {
                 videosNaoAssistidos.add(video);
+                UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
+                usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
+                usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
+                usuarioService.salvar(usuario);
             }
         }
         return videosNaoAssistidos;
@@ -135,6 +139,10 @@ public class VideoService {
         for (VideoMiniaturaProjection video : videos) {
             if(!usuario.getHistoricoVideo().contains(video)) {
                 videosNaoAssistidos.add(video);
+                UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
+                usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
+                usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
+                usuarioService.salvar(usuario);
             }
         }
         return videosNaoAssistidos;
