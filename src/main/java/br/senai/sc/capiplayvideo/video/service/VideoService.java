@@ -117,35 +117,11 @@ public class VideoService {
     }
 
     public List<VideoMiniaturaProjection> buscarTodos(Pageable pageable, String usuarioId) {
-        List<VideoMiniaturaProjection> videos = repository.findAllBy(pageable);
-        List<VideoMiniaturaProjection> videosNaoAssistidos = new ArrayList<>();
-        Usuario usuario = usuarioService.buscarUm(usuarioId);
-        for (VideoMiniaturaProjection video : videos) {
-            if(!usuario.getHistoricoVideo().contains(video)) {
-                videosNaoAssistidos.add(video);
-                UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
-                usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
-                usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
-                usuarioService.salvar(usuario);
-            }
-        }
-        return videosNaoAssistidos;
+        return repository.findAllByHistorico(pageable, usuarioId);
     }
 
-    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, CategoriasEnum categoria, String usuarioId) {
-        List<VideoMiniaturaProjection> videos = repository.findAllByCategoria_categoriaString(categoria.name(), pageable);
-        List<VideoMiniaturaProjection> videosNaoAssistidos = new ArrayList<>();
-        Usuario usuario = usuarioService.buscarUm(usuarioId);
-        for (VideoMiniaturaProjection video : videos) {
-            if(!usuario.getHistoricoVideo().contains(video)) {
-                videosNaoAssistidos.add(video);
-                UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
-                usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
-                usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
-                usuarioService.salvar(usuario);
-            }
-        }
-        return videosNaoAssistidos;
+    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, Long categoriaId, String usuarioId) {
+        return repository.findAllByHistoricoByCategoria(pageable, usuarioId, categoriaId);
     }
 
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
@@ -202,7 +178,7 @@ public class VideoService {
         List<VideoMiniaturaProjection> videosNaoAssistidos = new ArrayList<>();
         Usuario usuario = usuarioService.buscarUm(usuarioId);
         for (VideoMiniaturaProjection video : videosFiltrados) {
-            if(!usuario.getHistoricoVideo().contains(video)) {
+            if (!usuario.getHistoricoVideo().contains(video)) {
                 videosNaoAssistidos.add(video);
             }
         }

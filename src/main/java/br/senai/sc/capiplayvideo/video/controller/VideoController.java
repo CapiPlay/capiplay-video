@@ -56,12 +56,12 @@ public class VideoController {
 
     @GetMapping("/buscar-por-categoria")
     public List<VideoMiniaturaProjection> buscarPorCategoria(
-            @ModelAttribute CategoriasEnum categoria,
+            @RequestParam Long categoriaId,
             @RequestParam("size") int size,
             @RequestParam("page") int page,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return service.buscarPorCategoria(PageRequest.of(page, size), categoria, usuarioId);
+        return service.buscarPorCategoria(PageRequest.of(page, size), categoriaId, usuarioId);
     }
 
     @GetMapping("/buscar-reels")

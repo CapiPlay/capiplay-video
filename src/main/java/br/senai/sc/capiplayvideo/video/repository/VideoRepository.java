@@ -18,9 +18,31 @@ import java.util.Optional;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, String> {
 
-    List<VideoMiniaturaProjection> findAllBy(Pageable pageable);
+    // retornar v.uuid...
+    @Query(value = "SELECT * FROM Video v " +
+            "LEFT JOIN usuario_visualiza_video uvv " +
+            "ON v.uuid = uvv.video_uuid " +
+            "AND uvv.usuario_uuid = :usuarioUuid " +
+            "WHERE uvv.uuid IS NULL;", nativeQuery = true)
+    List<VideoMiniaturaProjection> findAllByHistorico(Pageable pageable,
+                                                      @Param("usuarioUuid") String usuarioUuid);
 
-    List<VideoMiniaturaProjection> findAllByCategoria_categoriaString(String categoria, Pageable pageable);
+    @Query(value = "SELECT * FROM Video v " +
+            "LEFT JOIN usuario_visualiza_video uvv ON v.uuid = uvv.video_uuid " +
+            "AND uvv.usuario_uuid = :usuarioUuid " +
+            "AND v.categoria_id = :categoriaId " +
+            "WHERE uvv.uuid IS NULL;", nativeQuery = true)
+    List<VideoMiniaturaProjection> findAllByHistoricoByCategoria(Pageable pageable,
+                                                                 @Param("usuarioUuid") String usuarioUuid,
+                                                                 @Param("categoriaId") Long categoriaId);
+
+    @Query(value = "SELECT * FROM Video v " +
+            "LEFT JOIN usuario_visualiza_video uvv " +
+            "ON v.uuid = uvv.video_uuid " +
+            "AND uvv.usuario_uuid = :usuarioUuid" +
+            "And v.shorts = '1' " +
+            "WHERE uvv.uuid IS NULL;", nativeQuery = true)
+    VideoMiniaturaProjection findAllByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid);
 
     Optional<VideoProjection> findByUuid(String uuid);
 
