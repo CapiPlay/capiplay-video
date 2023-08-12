@@ -15,4 +15,8 @@ public class UsuarioVisualizaVideoService {
         repository.save(usuarioVisualizaVideo);
     }
 
+    public UsuarioVisualizaVideo findByUsuarioUuidAndVideoUuid(String usuarioUuid, String videoUuid) {
+        return repository.findByUsuarioUuidAndVideoUuid(usuarioUuid, videoUuid);
+    }
+
 }

@@ -1,7 +1,5 @@
 package br.senai.sc.capiplayvideo.video.service;
 
-import br.senai.sc.capiplayvideo.categoria.model.enums.CategoriasEnum;
-import br.senai.sc.capiplayvideo.categoria.service.CategoriaService;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
@@ -10,7 +8,6 @@ import br.senai.sc.capiplayvideo.usuario.model.entity.UsuarioVisualizaVideo;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioVisualizaVideoService;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
-import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.enums.ResolucaoEnum;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
@@ -26,8 +23,7 @@ import org.jcodec.containers.mp4.boxes.Box;
 import org.jcodec.containers.mp4.boxes.MovieHeaderBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +47,6 @@ public class VideoService {
 
     private final VideoRepository repository;
     private final TagService tagService;
-    private final CategoriaService categoriaService;
     private final UsuarioService usuarioService;
     private final UsuarioVisualizaVideoService usuarioVisualizaVideoService;
 
@@ -61,13 +56,11 @@ public class VideoService {
     @Autowired
     public VideoService(VideoRepository repository,
                         TagService tagService,
-                        CategoriaService categoriaService,
                         UsuarioService usuarioService,
                         UsuarioVisualizaVideoService usuarioVisualizaVideoService
     ) {
         this.repository = repository;
         this.tagService = tagService;
-        this.categoriaService = categoriaService;
         this.usuarioService = usuarioService;
         this.usuarioVisualizaVideoService = usuarioVisualizaVideoService;
     }
@@ -92,7 +85,6 @@ public class VideoService {
             }
             Video video = new Video(uuid, videoDTO, diretorioEsse, usuarioId, durationInSeconds);
             video.getTags().forEach(tagService::salvar);
-            categoriaService.salvar(video.getCategoria());
             repository.save(video);
         } catch (Exception e) {
             FileUtils.deleteDirectory(new File(diretorioEsse));
@@ -120,8 +112,8 @@ public class VideoService {
         return repository.findAllByHistorico(pageable, usuarioId);
     }
 
-    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, Long categoriaId, String usuarioId) {
-        return repository.findAllByHistoricoByCategoria(pageable, usuarioId, categoriaId);
+    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, String categoria, String usuarioId) {
+        return repository.findAllByHistoricoByCategoria(pageable, usuarioId, categoria);
     }
 
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
@@ -136,22 +128,22 @@ public class VideoService {
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
-    public VideoProjection buscarReels(String uuidUsuario) {
-        List<Video> videos = repository.findAllByShortsIsTrue();
-        if (uuidUsuario == null) {
-            return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
-        }
+    public VideoProjection buscarShorts(String uuidUsuario) {
+        if (uuidUsuario == null) return repository.findOneByHistoricoByShort(null);
+        VideoProjection video = repository.findOneByHistoricoByShort(uuidUsuario);
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
-        for (Video video : videos) {
-            if (!usuario.getHistoricoVideo().contains(video)) {
-                UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, video);
-                usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
-                usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
-                usuarioService.salvar(usuario);
-                return repository.findByUuid(video.getUuid()).get();
-            }
+        if (video == null) {
+            VideoProjection videoR = repository.findShortByData(uuidUsuario, PageRequest.of(0, 1)).get(0);
+            UsuarioVisualizaVideo historico = usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, videoR.getUuid());
+            historico.setQtdVisualizacoes(historico.getQtdVisualizacoes() + 1);
+            usuarioVisualizaVideoService.salvar(historico);
+            return videoR;
         }
-        return repository.findByUuid(videos.get(Math.random() > 0.5 ? 0 : videos.size() - 1).getUuid()).get();
+        UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
+        usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
+        usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
+        usuarioService.salvar(usuario);
+        return video;
     }
 
     public Video buscarUmVideo(String uuid) {

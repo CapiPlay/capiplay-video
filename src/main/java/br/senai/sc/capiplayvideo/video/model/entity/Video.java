@@ -1,6 +1,5 @@
 package br.senai.sc.capiplayvideo.video.model.entity;
 
-import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
@@ -39,8 +38,7 @@ public class Video {
 
     private Long duracao;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Categoria categoria;
+    private String categoria;
 
     private Boolean shorts;
 
@@ -62,7 +60,7 @@ public class Video {
         this.caminho = caminho;
         this.shorts = videoDTO.shorts();
         this.tags = Tag.converterLista(videoDTO.tags());
-        this.categoria = new Categoria(videoDTO.categoria());
+        this.categoria = videoDTO.categoria();
         this.duracao = duracao;
         this.publicacao = LocalDate.now();
         this.restrito = videoDTO.restrito();

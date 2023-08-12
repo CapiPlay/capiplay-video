@@ -22,6 +22,8 @@ public interface VideoMiniaturaProjection {
 
     Long getCurtidas();
 
+    String getCategoria();
+
     @JsonIgnore
     String getCaminho();
 

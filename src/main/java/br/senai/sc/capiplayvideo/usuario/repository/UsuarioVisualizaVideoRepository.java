@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UsuarioVisualizaVideoRepository extends JpaRepository<UsuarioVisualizaVideo, Long> {
+
+    UsuarioVisualizaVideo findByUsuarioUuidAndVideoUuid(String usuarioUuid, String videoUuid);
+
 }

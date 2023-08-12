@@ -18,31 +18,6 @@ USE `db_capiplay_video`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categoria`
---
-
-DROP TABLE IF EXISTS `categoria`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categoria` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `categoria` enum('ARTESECULTURA','CIENCIAETECNOLOGIA','CULINARIA','DOCUMENTARIO','EDUCACAO','ENTRETENIMENTO','ESPORTES','JOGOS','LIFESTYLE','MODAEBELEZA','MUSICA','VIAGEMETURISMO') DEFAULT NULL,
-  `categoria_string` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FULLTEXT KEY `categoria_search` (`categoria_string`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categoria`
---
-
-LOCK TABLES `categoria` WRITE;
-/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `engajamento`
 --
 
@@ -119,6 +94,15 @@ CREATE TABLE `flyway_schema_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `flyway_schema_history`
+--
+
+LOCK TABLES `flyway_schema_history` WRITE;
+/*!40000 ALTER TABLE `flyway_schema_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `flyway_schema_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pesquisa`
 --
 
@@ -154,8 +138,7 @@ DROP TABLE IF EXISTS `tag`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tag` (
   `tag` varchar(255) NOT NULL,
-  PRIMARY KEY (`tag`),
-  FULLTEXT KEY `tag_search` (`tag`)
+  PRIMARY KEY (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -229,24 +212,21 @@ DROP TABLE IF EXISTS `video`;
 CREATE TABLE `video` (
   `uuid` varchar(255) NOT NULL,
   `caminho` varchar(255) DEFAULT NULL,
+  `categoria` varchar(255) DEFAULT NULL,
   `curtidas` bigint DEFAULT NULL,
-  `publicacao` date DEFAULT NULL,
   `descricao` varchar(255) DEFAULT NULL,
   `duracao` bigint DEFAULT NULL,
   `inativo` bit(1) DEFAULT NULL,
-  `shorts` bit(1) DEFAULT NULL,
-  `restrito` bit(1) DEFAULT NULL,
   `pontuacao` double DEFAULT NULL,
+  `publicacao` date DEFAULT NULL,
+  `restrito` bit(1) DEFAULT NULL,
+  `shorts` bit(1) DEFAULT NULL,
   `titulo` varchar(100) DEFAULT NULL,
   `visualizacoes` bigint DEFAULT NULL,
-  `categoria_id` bigint DEFAULT NULL,
   `usuario_uuid` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`uuid`),
-  KEY `FKgml8jjonc2do2ei93xrgg6gkr` (`categoria_id`),
   KEY `FKgcg2cwhi2ojuqb8f13sx27wgn` (`usuario_uuid`),
-  FULLTEXT KEY `video_search` (`titulo`),
-  CONSTRAINT `FKgcg2cwhi2ojuqb8f13sx27wgn` FOREIGN KEY (`usuario_uuid`) REFERENCES `usuario` (`uuid`),
-  CONSTRAINT `FKgml8jjonc2do2ei93xrgg6gkr` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`)
+  CONSTRAINT `FKgcg2cwhi2ojuqb8f13sx27wgn` FOREIGN KEY (`usuario_uuid`) REFERENCES `usuario` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -294,4 +274,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-08 19:28:08
+-- Dump completed on 2023-08-11 19:20:21

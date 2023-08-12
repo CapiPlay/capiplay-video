@@ -16,7 +16,6 @@ import java.util.List;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
 
     @OneToMany(mappedBy = "usuario")

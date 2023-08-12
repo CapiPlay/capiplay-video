@@ -25,10 +25,13 @@ public class UsuarioVisualizaVideo {
     @ManyToOne
     private Video video;
 
+    private Integer qtdVisualizacoes;
+
     private LocalDateTime dataVisualizacao = LocalDateTime.now();
 
     public UsuarioVisualizaVideo(Usuario usuario, Video video) {
         this.usuario = usuario;
         this.video = video;
+        this.qtdVisualizacoes = 1;
     }
 }

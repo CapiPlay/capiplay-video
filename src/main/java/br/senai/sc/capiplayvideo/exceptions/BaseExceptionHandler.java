@@ -23,6 +23,7 @@ public class BaseExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleException(Exception ex) {
         ApiError apiError = new ApiError(ex.getClass().getSimpleName(), ex.getMessage());
+        ex.printStackTrace();
         return internalServerError().body(apiError);
     }
 

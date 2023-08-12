@@ -1,48 +1,66 @@
 package br.senai.sc.capiplayvideo.video.repository;
 
-import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
-import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, String> {
 
-    // retornar v.uuid...
-    @Query(value = "SELECT * FROM Video v " +
-            "LEFT JOIN usuario_visualiza_video uvv " +
-            "ON v.uuid = uvv.video_uuid " +
-            "AND uvv.usuario_uuid = :usuarioUuid " +
-            "WHERE uvv.uuid IS NULL;", nativeQuery = true)
-    List<VideoMiniaturaProjection> findAllByHistorico(Pageable pageable,
-                                                      @Param("usuarioUuid") String usuarioUuid);
+    @Query(value = "SELECT v FROM Video v " +
+            "LEFT JOIN UsuarioVisualizaVideo uv " +
+            "ON v.uuid = uv.video.uuid " +
+            "AND uv.usuario.uuid = :usuarioUuid " +
+            "WHERE uv.uuid IS NULL")
+    List<VideoMiniaturaProjection> findAllByHistorico(
+            Pageable pageable, @Param("usuarioUuid") String usuarioUuid);
 
-    @Query(value = "SELECT * FROM Video v " +
-            "LEFT JOIN usuario_visualiza_video uvv ON v.uuid = uvv.video_uuid " +
-            "AND uvv.usuario_uuid = :usuarioUuid " +
-            "AND v.categoria_id = :categoriaId " +
-            "WHERE uvv.uuid IS NULL;", nativeQuery = true)
-    List<VideoMiniaturaProjection> findAllByHistoricoByCategoria(Pageable pageable,
-                                                                 @Param("usuarioUuid") String usuarioUuid,
-                                                                 @Param("categoriaId") Long categoriaId);
+    @Query(value = "SELECT v FROM Video v " +
+            "LEFT JOIN UsuarioVisualizaVideo uv " +
+            "ON uv.usuario.uuid = :usuarioUuid " +
+            "AND v.uuid = uv.video.uuid " +
+            "WHERE v.categoria = :categoria " +
+            "AND uv.uuid IS NULL")
+    List<VideoMiniaturaProjection> findAllByHistoricoByCategoria(
+            Pageable pageable,
+            @Param("usuarioUuid") String usuarioUuid,
+            @Param("categoria") String categoria);
 
-    @Query(value = "SELECT * FROM Video v " +
-            "LEFT JOIN usuario_visualiza_video uvv " +
-            "ON v.uuid = uvv.video_uuid " +
-            "AND uvv.usuario_uuid = :usuarioUuid" +
-            "And v.shorts = '1' " +
-            "WHERE uvv.uuid IS NULL;", nativeQuery = true)
-    VideoMiniaturaProjection findAllByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid);
+    @Query(value = "SELECT v FROM Video v " +
+            "LEFT JOIN UsuarioVisualizaVideo uv " +
+            "ON v.uuid = uv.video.uuid " +
+            "AND uv.usuario.uuid = :usuarioUuid " +
+            "And v.shorts = true " +
+            "WHERE uv.uuid IS NULL " +
+            "ORDER BY RAND()")
+    List<VideoProjection> findAllByHistoricoByShort(
+            @Param("usuarioUuid") String usuarioUuid, Pageable pageable);
+
+    @Query(value = "SELECT v FROM Video v " +
+            "LEFT JOIN UsuarioVisualizaVideo uv " +
+            "ON v.uuid = uv.video.uuid " +
+            "AND uv.usuario.uuid = :usuarioUuid " +
+            "AND v.shorts = true " +
+            "ORDER BY uv.qtdVisualizacoes ASC, uv.dataVisualizacao ASC")
+    List<VideoProjection> findShortByData(@Param("usuarioUuid") String usuarioUuid, Pageable pageable);
+
+    default VideoProjection findOneByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid) {
+        List<VideoProjection> videos = findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1));
+        if (videos.isEmpty()) return null;
+        return findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1)).get(0);
+    }
+
 
     Optional<VideoProjection> findByUuid(String uuid);
 

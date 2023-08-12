@@ -1,24 +1,18 @@
 package br.senai.sc.capiplayvideo.video.controller;
 
-import br.senai.sc.capiplayvideo.categoria.model.entity.Categoria;
-import br.senai.sc.capiplayvideo.categoria.model.enums.CategoriasEnum;
 import br.senai.sc.capiplayvideo.pesquisa.model.dto.FiltroDTO;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -56,19 +50,19 @@ public class VideoController {
 
     @GetMapping("/buscar-por-categoria")
     public List<VideoMiniaturaProjection> buscarPorCategoria(
-            @RequestParam Long categoriaId,
+            @RequestParam String categoria,
             @RequestParam("size") int size,
             @RequestParam("page") int page,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return service.buscarPorCategoria(PageRequest.of(page, size), categoriaId, usuarioId);
+        return service.buscarPorCategoria(PageRequest.of(page, size), categoria, usuarioId);
     }
 
-    @GetMapping("/buscar-reels")
-    public ResponseEntity<VideoProjection> buscarReels(
+    @GetMapping("/buscar-shorts")
+    public ResponseEntity<VideoProjection> buscarShorts(
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return ResponseEntity.ok(service.buscarReels(usuarioId));
+        return ResponseEntity.ok(service.buscarShorts(usuarioId));
     }
 
     @GetMapping("/filtro/{pesquisa}")
