@@ -37,9 +37,12 @@ import java.nio.file.Path;
 
 import java.nio.file.Paths;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static java.time.ZoneOffset.UTC;
 
 
 @Service
@@ -136,6 +139,7 @@ public class VideoService {
             VideoProjection videoR = repository.findShortByData(uuidUsuario, PageRequest.of(0, 1)).get(0);
             UsuarioVisualizaVideo historico = usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, videoR.getUuid());
             historico.setQtdVisualizacoes(historico.getQtdVisualizacoes() + 1);
+            historico.setDataVisualizacao(ZonedDateTime.now(UTC));
             usuarioVisualizaVideoService.salvar(historico);
             return videoR;
         }

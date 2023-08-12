@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
+import static java.time.ZoneOffset.UTC;
+import static java.time.ZonedDateTime.now;
 
 @Entity
 @Data
@@ -27,11 +31,12 @@ public class UsuarioVisualizaVideo {
 
     private Integer qtdVisualizacoes;
 
-    private LocalDateTime dataVisualizacao = LocalDateTime.now();
+    private ZonedDateTime dataVisualizacao = now();
 
     public UsuarioVisualizaVideo(Usuario usuario, Video video) {
         this.usuario = usuario;
         this.video = video;
+        this.setDataVisualizacao(now(UTC));
         this.qtdVisualizacoes = 1;
     }
 }
