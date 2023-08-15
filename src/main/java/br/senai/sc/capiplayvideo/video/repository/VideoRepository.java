@@ -61,12 +61,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
         return findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1)).get(0);
     }
 
-
     Optional<VideoProjection> findByUuid(String uuid);
-
-    List<Video> findAllByShortsIsTrue();
-
-    List<VideoMiniaturaProjection> findByPublicacaoAfter(LocalDate data);
 
     @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3000 +" +
             " (SELECT MAX(MATCH(categoria.categoria_string) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2000)" +

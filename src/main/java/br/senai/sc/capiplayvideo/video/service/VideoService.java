@@ -120,14 +120,20 @@ public class VideoService {
     }
 
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
-        if (uuidUsuario == null) {
-            return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
-        }
+        if (uuidUsuario == null) return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
-        UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(uuid));
-        usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
-        usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
-        usuarioService.salvar(usuario);
+        UsuarioVisualizaVideo historico =
+                usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
+        if (historico == null) {
+            historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
+            usuarioVisualizaVideoService.salvar(historico);
+            usuario.getHistoricoVideo().add(historico);
+            usuarioService.salvar(usuario);
+        } else {
+            historico.setQtdVisualizacoes(historico.getQtdVisualizacoes() + 1);
+            historico.setDataVisualizacao(ZonedDateTime.now(UTC));
+            usuarioVisualizaVideoService.salvar(historico);
+        }
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
