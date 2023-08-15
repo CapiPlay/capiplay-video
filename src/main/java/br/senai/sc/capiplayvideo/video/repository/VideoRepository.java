@@ -21,6 +21,10 @@ public interface VideoRepository extends JpaRepository<Video, String> {
 
     List<VideoMiniaturaProjection> findAllByUsuario_Uuid(String usuarioId, Pageable pageable);
 
+    @Query(value = "SELECT v.video FROM UsuarioVisualizaVideo v " +
+            "WHERE v.usuario.uuid = :usuarioId ")
+    List<VideoMiniaturaProjection> findAllHistoricoMinimizado(String usuarioId, Pageable pageable);
+
     @Query(value = "SELECT v FROM Video v " +
             "LEFT JOIN UsuarioVisualizaVideo uv " +
             "ON v.uuid = uv.video.uuid " +

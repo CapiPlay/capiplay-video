@@ -39,6 +39,15 @@ public class VideoController {
         return ResponseEntity.ok(service.buscarUm(uuid, usuarioId));
     }
 
+    @GetMapping("/buscar-historico")
+    public ResponseEntity<List<VideoMiniaturaProjection>> buscarHistorico(
+            @RequestParam("size") int size,
+            @RequestParam("page") int page,
+            @RequestHeader(value = "usuarioId") String usuarioId
+    ) {
+        return ResponseEntity.ok(service.buscarHistorico(PageRequest.of(page, size), usuarioId));
+    }
+
     @GetMapping("/buscar-resumido")
     public List<VideoMiniaturaProjection> buscarTodos(
             @RequestParam("size") int size,
