@@ -65,6 +65,15 @@ public class VideoController {
         return ResponseEntity.ok(service.buscarShorts(usuarioId));
     }
 
+    @GetMapping("/buscar-videos-canal")
+    public List<VideoMiniaturaProjection> buscarUploads(
+            @RequestParam("size") int size,
+            @RequestParam("page") int page,
+            @RequestHeader(value = "usuarioId") String usuarioId
+    ) {
+        return service.buscarUploads(PageRequest.of(page, size), usuarioId);
+    }
+
     @GetMapping("/filtro/{pesquisa}")
     public ResponseEntity<List<VideoMiniaturaProjection>> filtrarVideos(
             @PathVariable String pesquisa,

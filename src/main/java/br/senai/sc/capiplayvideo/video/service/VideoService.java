@@ -180,4 +180,8 @@ public class VideoService {
         }
         return videosNaoAssistidos;
     }
+
+    public List<VideoMiniaturaProjection> buscarUploads(Pageable pageable, String usuarioId) {
+        return repository.findAllByUsuario_Uuid(usuarioId, pageable);
+    }
 }

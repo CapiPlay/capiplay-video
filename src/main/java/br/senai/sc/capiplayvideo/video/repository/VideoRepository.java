@@ -2,6 +2,7 @@ package br.senai.sc.capiplayvideo.video.repository;
 
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, String> {
+
+    List<VideoMiniaturaProjection> findAllByUsuario_Uuid(String usuarioId, Pageable pageable);
 
     @Query(value = "SELECT v FROM Video v " +
             "LEFT JOIN UsuarioVisualizaVideo uv " +
