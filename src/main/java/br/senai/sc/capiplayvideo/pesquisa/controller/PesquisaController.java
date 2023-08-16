@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/pesquisa")
+@RequestMapping("/api/video/pesquisa")
 public class PesquisaController {
 
     private PesquisaService pesquisaService;
@@ -19,7 +19,7 @@ public class PesquisaController {
     @GetMapping("/{string}")
     public ResponseEntity<List<VideoMiniaturaProjection>> buscarVideos(
             @PathVariable String string,
-            @RequestHeader("usuarioId") String usuarioId
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
         Pesquisa pesquisa = new Pesquisa(string, usuarioId);
         return ResponseEntity.ok(pesquisaService.buscarVideos(pesquisa, usuarioId));

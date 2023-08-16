@@ -43,7 +43,7 @@ public class VideoController {
     public ResponseEntity<List<VideoMiniaturaProjection>> buscarHistorico(
             @RequestParam("size") int size,
             @RequestParam("page") int page,
-            @RequestHeader(value = "usuarioId") String usuarioId
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
         return ResponseEntity.ok(service.buscarHistorico(PageRequest.of(page, size), usuarioId));
     }
@@ -78,9 +78,9 @@ public class VideoController {
     public List<VideoMiniaturaProjection> buscarUploads(
             @RequestParam("size") int size,
             @RequestParam("page") int page,
-            @RequestHeader(value = "usuarioId") String usuarioId
+            @RequestParam("donoCanalId") String donoCanalId
     ) {
-        return service.buscarUploads(PageRequest.of(page, size), usuarioId);
+        return service.buscarUploads(PageRequest.of(page, size), donoCanalId);
     }
 
     @GetMapping("/filtro/{pesquisa}")

@@ -15,13 +15,15 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/video/usuario")
 public class UsuarioController {
 
     private UsuarioService service;
 
     @GetMapping("/historico-pesquisa")
-    public ResponseEntity<List<Pesquisa>> buscarHistoricoPesquisa(@RequestHeader("usuarioId") String usuarioId) {
+    public ResponseEntity<List<Pesquisa>> buscarHistoricoPesquisa(
+            @RequestHeader(value = "usuarioId", required = false) String usuarioId
+    ) {
         return ResponseEntity.ok(service.buscarHistoricoPesquisa(usuarioId));
     }
 }
