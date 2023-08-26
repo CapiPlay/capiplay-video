@@ -53,6 +53,8 @@ public class Video {
 
     private Boolean restrito;
 
+    private Long qtdComentarios;
+
     public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId, Long duracao) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
@@ -65,6 +67,10 @@ public class Video {
         this.publicacao = LocalDate.now();
         this.restrito = videoDTO.restrito();
         this.usuario = new Usuario(usuarioId);
+        this.qtdComentarios = 0L;
+        this.curtidas = 0L;
+        this.visualizacoes = 0L;
+        this.pontuacao = 0.0;
     }
 
     public Video(String uuid){

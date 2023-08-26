@@ -1,4 +1,4 @@
 package br.senai.sc.capiplayvideo.usuario.amqp.events;
 
-public record UsuarioSalvoEvent(String id) {
+public record AnonimoSalvoEvent(String id) {
 }

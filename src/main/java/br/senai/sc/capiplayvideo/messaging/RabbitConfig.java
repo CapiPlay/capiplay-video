@@ -29,6 +29,31 @@ public class RabbitConfig {
     }
 
     @Bean
+    Queue queueVideoSalvo() {
+        return new Queue("videos.v1.video-salvo.engajamento");
+    }
+
+    @Bean
+    Queue queueVideoAtualizado() {
+        return new Queue("videos.v1.video-atualizado.video");
+    }
+
+    @Bean
+    Queue queueUsuarioSalvo() {
+        return new Queue("usuarios.v1.usuario-salvo.video");
+    }
+
+    @Bean
+    Queue queueAnonimoSalvo() {
+        return new Queue("usuarios.v1.anonimo-salvo.video");
+    }
+
+    @Bean
+    Binding bindingVideoSalvo(Queue queueVideoSalvo, TopicExchange exchange) {
+        return BindingBuilder.bind(queueVideoSalvo).to(exchange).with("VideoSalvoEvent");
+    }
+
+    @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }

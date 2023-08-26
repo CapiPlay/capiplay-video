@@ -23,6 +23,8 @@ public interface VideoProjection {
 
     List<Tag> getTags();
 
+    Long getQtdComentarios();
+
     String getCategoria();
 
 }

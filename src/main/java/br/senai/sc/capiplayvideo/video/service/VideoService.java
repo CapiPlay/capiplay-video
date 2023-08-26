@@ -1,5 +1,6 @@
 package br.senai.sc.capiplayvideo.video.service;
 
+import br.senai.sc.capiplayvideo.messaging.Publisher;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
@@ -7,6 +8,7 @@ import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.usuario.model.entity.UsuarioVisualizaVideo;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioVisualizaVideoService;
+import br.senai.sc.capiplayvideo.video.amqp.VideoSalvoEvent;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.enums.ResolucaoEnum;
@@ -52,6 +54,7 @@ public class VideoService {
     private final TagService tagService;
     private final UsuarioService usuarioService;
     private final UsuarioVisualizaVideoService usuarioVisualizaVideoService;
+    private final Publisher publisher;
 
     @Value("${diretorioVideos}")
     private String diretorio;
@@ -60,12 +63,13 @@ public class VideoService {
     public VideoService(VideoRepository repository,
                         TagService tagService,
                         UsuarioService usuarioService,
-                        UsuarioVisualizaVideoService usuarioVisualizaVideoService
-    ) {
+                        UsuarioVisualizaVideoService usuarioVisualizaVideoService,
+                        Publisher publisher) {
         this.repository = repository;
         this.tagService = tagService;
         this.usuarioService = usuarioService;
         this.usuarioVisualizaVideoService = usuarioVisualizaVideoService;
+        this.publisher = publisher;
     }
 
     public void salvar(@Valid VideoDTO videoDTO, String usuarioId) throws IOException {
@@ -89,6 +93,7 @@ public class VideoService {
             Video video = new Video(uuid, videoDTO, diretorioEsse, usuarioId, durationInSeconds);
             video.getTags().forEach(tagService::salvar);
             repository.save(video);
+            this.publisher.publish(new VideoSalvoEvent(video.getUuid(), false)); // Manda para o RabbitMQ
         } catch (Exception e) {
             FileUtils.deleteDirectory(new File(diretorioEsse));
             throw e;

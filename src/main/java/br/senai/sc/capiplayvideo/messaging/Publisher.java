@@ -1,5 +1,6 @@
 package br.senai.sc.capiplayvideo.messaging;
 
+import br.senai.sc.capiplayvideo.video.amqp.VideoSalvoEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,8 @@ public class Publisher {
 
     private static final String EXCHANGE = "video-service";
 
-    public void publish(Object event) {
-        var routingKey = event.getClass().getSimpleName();
+    public void publish(VideoSalvoEvent event) {
+        String routingKey = event.getClass().getSimpleName();
         rabbitTemplate.convertAndSend(EXCHANGE, routingKey, event);
     }
 }
