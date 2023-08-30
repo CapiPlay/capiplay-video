@@ -27,4 +27,8 @@ public interface VideoProjection {
 
     String getCategoria();
 
+    Long getVisualizacoes();
+
+    Long getCurtidas();
+
 }
