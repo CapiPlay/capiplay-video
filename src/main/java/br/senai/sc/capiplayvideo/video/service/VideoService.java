@@ -17,6 +17,7 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;

@@ -49,8 +49,9 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "LEFT JOIN UsuarioVisualizaVideo uv " +
             "ON v.uuid = uv.video.uuid " +
             "AND uv.usuario.uuid = :usuarioUuid " +
-            "And v.shorts = true " +
+//            "And v.shorts = true " +
             "WHERE uv.uuid IS NULL " +
+            "and v.shorts = true " +
             "ORDER BY RAND()")
     List<VideoProjection> findAllByHistoricoByShort(
             @Param("usuarioUuid") String usuarioUuid, Pageable pageable);
