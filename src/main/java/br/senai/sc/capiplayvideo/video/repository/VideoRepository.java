@@ -83,8 +83,8 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "(SELECT MAX(MATCH(tag.tag) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE)) " +
             "FROM tag, video_tags WHERE video_tags.tags_tag = tag.tag and video_tags.video_uuid = video.uuid)" +
             "TotalScore FROM video " +
-            "WHERE (:filtroDia = FALSE OR DATE(video.publicacao) = CURRENT_DATE() AND DATE(video.publicacao) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AND MONTH(video.publicacao) = MONTH(CURRENT_DATE()) AND YEAR(video.publicacao) = YEAR(CURRENT_DATE())) " +
-            "AND (:filtroSemana = FALSE OR DATE(video.publicacao) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AND MONTH(video.publicacao) = MONTH(CURRENT_DATE()) AND YEAR(video.publicacao) = YEAR(CURRENT_DATE())) " +
+            "WHERE (:filtroDia = FALSE OR DATE(video.publicacao) >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) AND MONTH(video.publicacao) = MONTH(CURRENT_DATE()) AND YEAR(video.publicacao) = YEAR(CURRENT_DATE())) " +
+            "AND (:filtroSemana = FALSE OR DATE(video.publicacao) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)) " +
             "AND (:filtroMes = FALSE OR MONTH(video.publicacao) = MONTH(CURRENT_DATE()) AND YEAR(video.publicacao) = YEAR(CURRENT_DATE())) " +
             "AND (:filtroAno = FALSE OR YEAR(video.publicacao) = YEAR(CURRENT_DATE())) " +
             "AND (:filtroMenosDe5Min = FALSE OR video.duracao < 300) " +
