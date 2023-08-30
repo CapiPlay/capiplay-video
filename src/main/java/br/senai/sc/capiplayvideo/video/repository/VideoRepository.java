@@ -2,7 +2,6 @@ package br.senai.sc.capiplayvideo.video.repository;
 
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
@@ -11,8 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,12 +46,17 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "LEFT JOIN UsuarioVisualizaVideo uv " +
             "ON v.uuid = uv.video.uuid " +
             "AND uv.usuario.uuid = :usuarioUuid " +
-//            "And v.shorts = true " +
             "WHERE uv.uuid IS NULL " +
             "and v.shorts = true " +
             "ORDER BY RAND()")
     List<VideoProjection> findAllByHistoricoByShort(
             @Param("usuarioUuid") String usuarioUuid, Pageable pageable);
+
+    default VideoProjection findOneByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid) {
+        List<VideoProjection> videos = findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1));
+        if (videos.isEmpty()) return null;
+        return videos.get(0);
+    }
 
     @Query(value = "SELECT v FROM Video v " +
             "LEFT JOIN UsuarioVisualizaVideo uv " +
@@ -63,12 +65,6 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "AND v.shorts = true " +
             "ORDER BY uv.qtdVisualizacoes ASC, uv.dataVisualizacao ASC")
     List<VideoProjection> findShortByData(@Param("usuarioUuid") String usuarioUuid, Pageable pageable);
-
-    default VideoProjection findOneByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid) {
-        List<VideoProjection> videos = findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1));
-        if (videos.isEmpty()) return null;
-        return findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1)).get(0);
-    }
 
     Optional<VideoProjection> findByUuid(String uuid);
 
