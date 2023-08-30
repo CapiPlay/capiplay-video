@@ -17,6 +17,7 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -125,7 +126,6 @@ public class VideoService {
     }
 
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
-        if (uuidUsuario == null) return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
                 usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
@@ -135,22 +135,21 @@ public class VideoService {
             usuario.getHistoricoVideo().add(historico);
             usuarioService.salvar(usuario);
         } else {
-            historico.setQtdVisualizacoes(historico.getQtdVisualizacoes() + 1);
-            historico.setDataVisualizacao(ZonedDateTime.now(UTC));
+            historico.incrementarVisualizacao();
+            historico.atualizarData();
             usuarioVisualizaVideoService.salvar(historico);
         }
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
     public VideoProjection buscarShorts(String uuidUsuario) {
-        if (uuidUsuario == null) return repository.findOneByHistoricoByShort(null);
         VideoProjection video = repository.findOneByHistoricoByShort(uuidUsuario);
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         if (video == null) {
             VideoProjection videoR = repository.findShortByData(uuidUsuario, PageRequest.of(0, 1)).get(0);
             UsuarioVisualizaVideo historico = usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, videoR.getUuid());
-            historico.setQtdVisualizacoes(historico.getQtdVisualizacoes() + 1);
-            historico.setDataVisualizacao(ZonedDateTime.now(UTC));
+            historico.incrementarVisualizacao();
+            historico.atualizarData();
             usuarioVisualizaVideoService.salvar(historico);
             return videoR;
         }

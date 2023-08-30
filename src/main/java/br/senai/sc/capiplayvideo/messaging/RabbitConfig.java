@@ -1,6 +1,5 @@
 package br.senai.sc.capiplayvideo.messaging;
 
-import br.senai.sc.capiplayvideo.usuario.amqp.events.UsuarioSalvoEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

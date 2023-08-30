@@ -1,10 +1,9 @@
 package br.senai.sc.capiplayvideo.usuario.model.entity;
 
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
@@ -17,7 +16,8 @@ import static java.time.ZonedDateTime.now;
 import static java.util.Objects.requireNonNullElse;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioVisualizaVideo {
@@ -41,5 +41,13 @@ public class UsuarioVisualizaVideo {
         this.video = video;
         this.setDataVisualizacao(now(UTC));
         this.qtdVisualizacoes = 1;
+    }
+
+    public void incrementarVisualizacao() {
+        this.qtdVisualizacoes++;
+    }
+
+    public void atualizarData() {
+        this.dataVisualizacao = now(UTC);
     }
 }
