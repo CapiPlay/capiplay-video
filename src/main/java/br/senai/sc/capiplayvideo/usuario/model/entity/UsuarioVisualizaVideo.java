@@ -5,13 +5,16 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.now;
+import static java.util.Objects.requireNonNullElse;
 
 @Entity
 @Data
@@ -31,7 +34,7 @@ public class UsuarioVisualizaVideo {
 
     private Integer qtdVisualizacoes;
 
-    private ZonedDateTime dataVisualizacao = now();
+    private ZonedDateTime dataVisualizacao;
 
     public UsuarioVisualizaVideo(Usuario usuario, Video video) {
         this.usuario = usuario;
