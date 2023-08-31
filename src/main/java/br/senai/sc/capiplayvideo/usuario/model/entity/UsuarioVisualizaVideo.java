@@ -32,7 +32,7 @@ public class UsuarioVisualizaVideo {
     @ManyToOne
     private Video video;
 
-    private Integer qtdVisualizacoes;
+    private Integer qtdVisualizacoes = 0;
 
     private ZonedDateTime dataVisualizacao;
 
@@ -40,7 +40,7 @@ public class UsuarioVisualizaVideo {
         this.usuario = usuario;
         this.video = video;
         this.setDataVisualizacao(now(UTC));
-        this.qtdVisualizacoes = 1;
+        this.qtdVisualizacoes = 0;
     }
 
     public void incrementarVisualizacao() {

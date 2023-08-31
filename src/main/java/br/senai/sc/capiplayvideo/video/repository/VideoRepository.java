@@ -26,10 +26,11 @@ public interface VideoRepository extends JpaRepository<Video, String> {
         "LEFT JOIN UsuarioVisualizaVideo uv " +
         "ON v.uuid = uv.video.uuid " +
         "AND uv.usuario.uuid = :usuarioUuid " +
-        "WHERE v.shorts = false " +
+        "WHERE v.shorts = :shorts " +
         "ORDER BY uv.qtdVisualizacoes ASC, uv.dataVisualizacao ASC")
     List<VideoMiniaturaProjection> findAllByHistorico(
-            Pageable pageable, @Param("usuarioUuid") String usuarioUuid);
+            Pageable pageable, @Param("usuarioUuid") String usuarioUuid,
+            @Param("shorts") boolean shorts);
 
     @Query(value = "SELECT v FROM Video v " +
             "LEFT JOIN UsuarioVisualizaVideo uv " +
@@ -46,7 +47,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "LEFT JOIN UsuarioVisualizaVideo uv " +
             "ON v.uuid = uv.video.uuid " +
             "AND uv.usuario.uuid = :usuarioUuid " +
-            "WHERE uv.uuid IS NULL " +
+            "WHERE uv.uuid IS NULL AND uv.video.shorts = true " +
             "and v.shorts = true " +
             "ORDER BY RAND()")
     List<VideoProjection> findAllByHistoricoByShort(
@@ -62,7 +63,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "LEFT JOIN UsuarioVisualizaVideo uv " +
             "ON v.uuid = uv.video.uuid " +
             "AND uv.usuario.uuid = :usuarioUuid " +
-            "AND v.shorts = true " +
+            "where v.shorts = true " +
             "ORDER BY uv.qtdVisualizacoes ASC, uv.dataVisualizacao ASC")
     List<VideoProjection> findShortByData(@Param("usuarioUuid") String usuarioUuid, Pageable pageable);
 
