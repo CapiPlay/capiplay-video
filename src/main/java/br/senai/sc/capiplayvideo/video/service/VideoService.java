@@ -117,12 +117,8 @@ public class VideoService {
         return bufferedResizedImage;
     }
 
-    public List<VideoMiniaturaProjection> buscarTodos(Pageable pageable, String usuarioId) {
-        return repository.findAllByHistorico(pageable, usuarioId);
-    }
-
-    public List<VideoMiniaturaProjection> buscarTodosShorts(Pageable pageable, String usuarioId) {
-        return repository.findAllByHistoricoAndShorts(pageable, usuarioId);
+    public List<VideoMiniaturaProjection> buscarTodos(Pageable pageable, String usuarioId, boolean shorts) {
+        return repository.findAllByHistorico(pageable, usuarioId, shorts);
     }
 
     public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, String categoria, String usuarioId) {

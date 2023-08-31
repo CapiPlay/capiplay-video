@@ -52,18 +52,10 @@ public class VideoController {
     public List<VideoMiniaturaProjection> buscarTodos(
             @RequestParam("size") int size,
             @RequestParam("page") int page,
+            @RequestParam("shorts") boolean shorts,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return service.buscarTodos(PageRequest.of(page, size), usuarioId);
-    }
-
-    @GetMapping("/buscar-todos-shorts")
-    public List<VideoMiniaturaProjection> buscarTodosShorts(
-            @RequestParam("size") int size,
-            @RequestParam("page") int page,
-            @RequestHeader(value = "usuarioId", required = false) String usuarioId
-    ) {
-        return service.buscarTodosShorts(PageRequest.of(page, size), usuarioId);
+        return service.buscarTodos(PageRequest.of(page, size), usuarioId, shorts);
     }
 
     @GetMapping("/buscar-por-categoria")
