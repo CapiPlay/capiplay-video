@@ -126,11 +126,11 @@ public class VideoService {
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
-                usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
+                visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
         if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
         historico.incrementarVisualizacao();
         historico.atualizarData();
-        usuarioVisualizaVideoService.salvar(historico);
+        visualizacaoService.salvar(historico);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
