@@ -46,6 +46,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static java.time.ZoneOffset.UTC;
+import static java.util.Objects.isNull;
 
 
 @Service
@@ -129,12 +130,9 @@ public class VideoService {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
                 usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
-        if (historico == null) {
-            historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
-        } else {
-            historico.incrementarVisualizacao();
-            historico.atualizarData();
-        }
+        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
+        historico.incrementarVisualizacao();
+        historico.atualizarData();
         usuarioVisualizaVideoService.salvar(historico);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
