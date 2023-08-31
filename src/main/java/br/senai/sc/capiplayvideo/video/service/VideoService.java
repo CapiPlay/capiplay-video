@@ -17,7 +17,6 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -40,12 +39,10 @@ import java.nio.file.Path;
 
 import java.nio.file.Paths;
 
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static java.time.ZoneOffset.UTC;
+import static java.util.Objects.isNull;
 
 
 @Service
@@ -54,7 +51,7 @@ public class VideoService {
     private final VideoRepository repository;
     private final TagService tagService;
     private final UsuarioService usuarioService;
-    private final UsuarioVisualizaVideoService usuarioVisualizaVideoService;
+    private final UsuarioVisualizaVideoService visualizacaoService;
     private final Publisher publisher;
 
     @Value("${diretorioVideos}")
@@ -69,7 +66,7 @@ public class VideoService {
         this.repository = repository;
         this.tagService = tagService;
         this.usuarioService = usuarioService;
-        this.usuarioVisualizaVideoService = usuarioVisualizaVideoService;
+        this.visualizacaoService = usuarioVisualizaVideoService;
         this.publisher = publisher;
     }
 
@@ -128,32 +125,28 @@ public class VideoService {
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
-                usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
+                visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
         if (historico == null) {
             historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
         } else {
             historico.incrementarVisualizacao();
             historico.atualizarData();
         }
-        usuarioVisualizaVideoService.salvar(historico);
+        visualizacaoService.salvar(historico);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
     public VideoProjection buscarShorts(String uuidUsuario) {
         VideoProjection video = repository.findOneByHistoricoByShort(uuidUsuario);
+        if (isNull(video))
+            video = repository.findShortByData(uuidUsuario, PageRequest.of(0, 1)).get(0);
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
-        if (video == null) {
-            VideoProjection videoR = repository.findShortByData(uuidUsuario, PageRequest.of(0, 1)).get(0);
-            UsuarioVisualizaVideo historico = usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, videoR.getUuid());
-            historico.incrementarVisualizacao();
-            historico.atualizarData();
-            usuarioVisualizaVideoService.salvar(historico);
-            return videoR;
-        }
-        UsuarioVisualizaVideo usuarioVisualizaVideo = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
-        usuarioVisualizaVideoService.salvar(usuarioVisualizaVideo);
-        usuario.getHistoricoVideo().add(usuarioVisualizaVideo);
-        usuarioService.salvar(usuario);
+        UsuarioVisualizaVideo historico =
+                visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, video.getUuid());
+        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, new Video(video.getUuid()));
+        historico.incrementarVisualizacao();
+        historico.atualizarData();
+        visualizacaoService.salvar(historico);
         return video;
     }
 
