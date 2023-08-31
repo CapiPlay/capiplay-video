@@ -131,14 +131,11 @@ public class VideoService {
                 usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
         if (historico == null) {
             historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
-            usuarioVisualizaVideoService.salvar(historico);
-            usuario.getHistoricoVideo().add(historico);
-            usuarioService.salvar(usuario);
         } else {
             historico.incrementarVisualizacao();
             historico.atualizarData();
-            usuarioVisualizaVideoService.salvar(historico);
         }
+        usuarioVisualizaVideoService.salvar(historico);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
