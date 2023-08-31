@@ -42,6 +42,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 
+import static java.time.ZoneOffset.UTC;
 import static java.util.Objects.isNull;
 
 
@@ -125,14 +126,11 @@ public class VideoService {
     public VideoProjection buscarUm(String uuid, String uuidUsuario) {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
-                visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
-        if (historico == null) {
-            historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
-        } else {
-            historico.incrementarVisualizacao();
-            historico.atualizarData();
-        }
-        visualizacaoService.salvar(historico);
+                usuarioVisualizaVideoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
+        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
+        historico.incrementarVisualizacao();
+        historico.atualizarData();
+        usuarioVisualizaVideoService.salvar(historico);
         return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
     }
 
