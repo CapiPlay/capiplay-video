@@ -25,6 +25,7 @@ import org.jcodec.containers.mp4.boxes.Box;
 import org.jcodec.containers.mp4.boxes.MovieHeaderBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -115,7 +116,7 @@ public class VideoService {
         return bufferedResizedImage;
     }
 
-    public List<VideoMiniaturaProjection> buscarTodos(Pageable pageable, String usuarioId, boolean shorts) {
+    public Page<VideoMiniaturaProjection> buscarTodos(Pageable pageable, String usuarioId, boolean shorts) {
         return repository.findAllByHistorico(pageable, usuarioId, shorts);
     }
 

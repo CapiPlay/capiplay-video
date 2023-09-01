@@ -2,6 +2,7 @@ package br.senai.sc.capiplayvideo.video.repository;
 
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
@@ -28,7 +29,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
         "AND uv.usuario.uuid = :usuarioUuid " +
         "WHERE v.shorts = :shorts " +
         "ORDER BY uv.qtdVisualizacoes ASC, uv.dataVisualizacao ASC")
-    List<VideoMiniaturaProjection> findAllByHistorico(
+    Page<VideoMiniaturaProjection> findAllByHistorico(
             Pageable pageable, @Param("usuarioUuid") String usuarioUuid,
             @Param("shorts") boolean shorts);
 

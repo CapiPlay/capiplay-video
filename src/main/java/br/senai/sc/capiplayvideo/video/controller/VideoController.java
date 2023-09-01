@@ -8,6 +8,7 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class VideoController {
     }
 
     @GetMapping("/buscar-resumido")
-    public List<VideoMiniaturaProjection> buscarTodos(
+    public Page<VideoMiniaturaProjection> buscarTodos(
             @RequestParam("size") int size,
             @RequestParam("page") int page,
             @RequestParam("shorts") boolean shorts,
