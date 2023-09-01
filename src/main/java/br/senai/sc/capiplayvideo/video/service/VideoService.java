@@ -128,7 +128,7 @@ public class VideoService {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
                 visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
-        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, new Video(uuid));
+        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, repository.findById(uuid).get());
         historico.incrementarVisualizacao();
         historico.atualizarData();
         visualizacaoService.salvar(historico);
