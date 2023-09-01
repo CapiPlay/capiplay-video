@@ -17,7 +17,6 @@ public class EngajamentoSubscriber {
     public void on(VideoAtualizadoEvent videoAtualizadoEvent) {
         Video video = videoService.buscarUmVideo(videoAtualizadoEvent.id());
         video.setCurtidas(videoAtualizadoEvent.qtdComentarios());
-        video.setVisualizacoes(videoAtualizadoEvent.qtdVisualizacoes());
         video.setPontuacao(videoAtualizadoEvent.pontuacao());
         videoService.atualizarVideo(video);
     }
