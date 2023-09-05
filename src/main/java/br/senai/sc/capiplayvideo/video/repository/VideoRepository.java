@@ -5,7 +5,6 @@ import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -51,11 +50,11 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "WHERE uv.uuid IS NULL AND uv.video.shorts = true " +
             "and v.shorts = true " +
             "ORDER BY RAND()")
-    List<VideoProjection> findAllByHistoricoByShort(
+    List<Video> findAllByHistoricoByShort(
             @Param("usuarioUuid") String usuarioUuid, Pageable pageable);
 
-    default VideoProjection findOneByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid) {
-        List<VideoProjection> videos = findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1));
+    default Video findOneByHistoricoByShort(@Param("usuarioUuid") String usuarioUuid) {
+        List<Video> videos = findAllByHistoricoByShort(usuarioUuid, PageRequest.of(0, 1));
         if (videos.isEmpty()) return null;
         return videos.get(0);
     }
@@ -66,9 +65,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "AND uv.usuario.uuid = :usuarioUuid " +
             "where v.shorts = true " +
             "ORDER BY uv.qtdVisualizacoes ASC, uv.dataVisualizacao ASC")
-    List<VideoProjection> findShortByData(@Param("usuarioUuid") String usuarioUuid, Pageable pageable);
-
-    Optional<VideoProjection> findByUuid(String uuid);
+    List<Video> findShortByData(@Param("usuarioUuid") String usuarioUuid, Pageable pageable);
 
     @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3000 +" +
             " (SELECT MAX(MATCH(categoria.categoria_string) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2000)" +

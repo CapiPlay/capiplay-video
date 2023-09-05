@@ -10,10 +10,10 @@ import br.senai.sc.capiplayvideo.usuario.service.UsuarioService;
 import br.senai.sc.capiplayvideo.usuario.service.UsuarioVisualizaVideoService;
 import br.senai.sc.capiplayvideo.video.amqp.VideoSalvoEvent;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
+import br.senai.sc.capiplayvideo.video.model.dto.VideoRetornoDTO;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.model.enums.ResolucaoEnum;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
-import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.repository.VideoRepository;
 import br.senai.sc.capiplayvideo.video.utils.GeradorUuidUtils;
 
@@ -124,21 +124,25 @@ public class VideoService {
         return repository.findAllByHistoricoByCategoria(pageable, usuarioId, categoria);
     }
 
-    public VideoProjection buscarUm(String uuid, String uuidUsuario) {
+    public VideoRetornoDTO buscarUm(String uuid, String uuidUsuario) {
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
                 visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, uuid);
-        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, repository.findById(uuid).get());
+        Video video = repository.findById(uuid).get();
+        if (isNull(historico)) historico = new UsuarioVisualizaVideo(usuario, video);
         historico.incrementarVisualizacao();
         historico.atualizarData();
         visualizacaoService.salvar(historico);
-        return repository.findByUuid(uuid).orElseThrow(ObjetoInexistenteException::new);
+        video.incrementarVisualizacao();
+        repository.save(video);
+        return new VideoRetornoDTO(video);
     }
 
-    public VideoProjection buscarShorts(String uuidUsuario) {
-        VideoProjection video = repository.findOneByHistoricoByShort(uuidUsuario);
-        if (isNull(video))
+    public VideoRetornoDTO buscarShorts(String uuidUsuario) {
+        Video video = repository.findOneByHistoricoByShort(uuidUsuario);
+        if (isNull(video)) {
             video = repository.findShortByData(uuidUsuario, PageRequest.of(0, 1)).get(0);
+        }
         Usuario usuario = usuarioService.buscarUm(uuidUsuario);
         UsuarioVisualizaVideo historico =
                 visualizacaoService.findByUsuarioUuidAndVideoUuid(uuidUsuario, video.getUuid());
@@ -146,7 +150,9 @@ public class VideoService {
         historico.incrementarVisualizacao();
         historico.atualizarData();
         visualizacaoService.salvar(historico);
-        return video;
+        video.incrementarVisualizacao();
+        repository.save(video);
+        return new VideoRetornoDTO(video);
     }
 
     public Video buscarUmVideo(String uuid) {

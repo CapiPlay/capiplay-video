@@ -3,8 +3,8 @@ package br.senai.sc.capiplayvideo.video.controller;
 import br.senai.sc.capiplayvideo.pesquisa.model.dto.FiltroDTO;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
+import br.senai.sc.capiplayvideo.video.model.dto.VideoRetornoDTO;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
-import br.senai.sc.capiplayvideo.video.model.projection.VideoProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +33,7 @@ public class VideoController {
     }
 
     @GetMapping("/buscar-completo/{uuid}")
-    public ResponseEntity<VideoProjection> buscarUm(
+    public ResponseEntity<VideoRetornoDTO> buscarUm(
             @PathVariable String uuid,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
@@ -61,7 +61,7 @@ public class VideoController {
 
     @GetMapping("/buscar-por-categoria")
     public List<VideoMiniaturaProjection> buscarPorCategoria(
-            @RequestParam String categoria,
+            @RequestParam("categoria") String categoria,
             @RequestParam("size") int size,
             @RequestParam("page") int page,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
@@ -70,7 +70,7 @@ public class VideoController {
     }
 
     @GetMapping("/buscar-shorts")
-    public ResponseEntity<VideoProjection> buscarShorts(
+    public ResponseEntity<VideoRetornoDTO> buscarShorts(
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
         return ResponseEntity.ok(service.buscarShorts(usuarioId));

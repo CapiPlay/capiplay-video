@@ -54,6 +54,10 @@ public class Video {
 
     private Long qtdComentarios;
 
+    public void incrementarVisualizacao() {
+        this.visualizacoes++;
+    }
+
     public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId, Long duracao) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
