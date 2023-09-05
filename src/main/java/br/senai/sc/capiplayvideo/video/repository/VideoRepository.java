@@ -37,11 +37,13 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "ON uv.usuario.uuid = :usuarioUuid " +
             "AND v.uuid = uv.video.uuid " +
             "WHERE v.categoria = :categoria " +
+            "AND v.shorts = :shorts " +
             "AND uv.uuid IS NULL")
     List<VideoMiniaturaProjection> findAllByHistoricoByCategoria(
             Pageable pageable,
             @Param("usuarioUuid") String usuarioUuid,
-            @Param("categoria") String categoria);
+            @Param("categoria") String categoria,
+            @Param("shorts") boolean shorts);
 
     @Query(value = "SELECT v FROM Video v " +
             "LEFT JOIN UsuarioVisualizaVideo uv " +
@@ -69,9 +71,10 @@ public interface VideoRepository extends JpaRepository<Video, String> {
 
     @Query(value = "SELECT *, MATCH(video.titulo) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 3000 +" +
             " (SELECT MAX(MATCH(video.categoria) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 2000)" +
-            " FROM video +" +
+            "FROM video) +" +
             " (SELECT MAX(MATCH(tag.tag) AGAINST(CONCAT('*', :searchTerm, '*') IN BOOLEAN MODE) * 1000) " +
-            "FROM tag, video_tags WHERE video_tags.tags_tag = tag.tag and video_tags.video_uuid = video.uuid) + (video.pontuacao * 4)" +
+            "FROM tag, video_tags WHERE video_tags.tags_tag = tag.tag and video_tags.video_uuid = video.uuid) + " +
+            "(video.pontuacao * 4)" +
             " TotalScore FROM video GROUP BY video.titulo;",
             nativeQuery = true)
     List<VideoMiniaturaProjection> searchBy(String searchTerm);
