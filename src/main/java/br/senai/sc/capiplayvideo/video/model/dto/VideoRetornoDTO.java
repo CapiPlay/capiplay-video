@@ -3,9 +3,11 @@ package br.senai.sc.capiplayvideo.video.model.dto;
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.utils.DiretorioUtils;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class VideoRetornoDTO {
 
     private String uuid;
