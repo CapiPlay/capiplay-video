@@ -64,9 +64,10 @@ public class VideoController {
             @RequestParam("categoria") String categoria,
             @RequestParam("size") int size,
             @RequestParam("page") int page,
+            @RequestParam("shorts") boolean shorts,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        return service.buscarPorCategoria(PageRequest.of(page, size), categoria, usuarioId);
+        return service.buscarPorCategoria(PageRequest.of(page, size), categoria, usuarioId, shorts);
     }
 
     @GetMapping("/buscar-shorts")

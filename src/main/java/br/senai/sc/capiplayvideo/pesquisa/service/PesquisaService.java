@@ -20,12 +20,12 @@ public class PesquisaService {
     private VideoRepository videoRepository;
     private UsuarioService usuarioService;
 
-    public List<VideoMiniaturaProjection> buscarVideos(Pesquisa pesquisa, String uuid) {
+    public List<VideoMiniaturaProjection> buscarVideos(Pesquisa pesquisa, String uuid, boolean shorts) {
         Usuario usuario = usuarioService.buscarUm(uuid);
         usuario.getHistoricoPesquisa().add(pesquisa);
         repository.save(pesquisa);
         usuarioService.salvar(usuario);
-        return videoRepository.searchBy(pesquisa.getPesquisa());
+        return videoRepository.searchBy(pesquisa.getPesquisa(), shorts);
     }
 
 }

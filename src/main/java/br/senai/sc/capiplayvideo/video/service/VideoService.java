@@ -120,8 +120,8 @@ public class VideoService {
         return repository.findAllByHistorico(pageable, usuarioId, shorts);
     }
 
-    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, String categoria, String usuarioId) {
-        return repository.findAllByHistoricoByCategoria(pageable, usuarioId, categoria);
+    public List<VideoMiniaturaProjection> buscarPorCategoria(Pageable pageable, String categoria, String usuarioId, boolean shorts) {
+        return repository.findAllByHistoricoByCategoria(pageable, usuarioId, categoria, shorts);
     }
 
     public VideoRetornoDTO buscarUm(String uuid, String uuidUsuario) {
