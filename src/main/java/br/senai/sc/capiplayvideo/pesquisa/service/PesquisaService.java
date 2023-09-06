@@ -21,8 +21,8 @@ public class PesquisaService {
     private UsuarioService usuarioService;
 
     public List<VideoMiniaturaProjection> buscarVideos(String searchTerm, String uuid, boolean shorts) {
-        var pesquisa = new Pesquisa(searchTerm);
-        var usuario = usuarioService.buscarUm(uuid);
+        Pesquisa pesquisa = new Pesquisa(searchTerm);
+        Usuario usuario = usuarioService.buscarUm(uuid);
         usuario.getHistoricoPesquisa().add(pesquisa);
         repository.save(pesquisa);
         usuarioService.salvar(usuario);
