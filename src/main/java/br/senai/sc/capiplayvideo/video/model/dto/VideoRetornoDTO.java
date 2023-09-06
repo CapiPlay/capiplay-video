@@ -1,6 +1,7 @@
 package br.senai.sc.capiplayvideo.video.model.dto;
 
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
+import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
 import br.senai.sc.capiplayvideo.video.model.entity.Video;
 import br.senai.sc.capiplayvideo.video.utils.DiretorioUtils;
 import lombok.Data;
@@ -28,6 +29,8 @@ public class VideoRetornoDTO {
 
     private Long curtidas;
 
+    private Usuario usuario;
+
     public VideoRetornoDTO(Video video) {
         this.uuid = video.getUuid();
         this.titulo = video.getTitulo();
@@ -38,5 +41,6 @@ public class VideoRetornoDTO {
         this.categoria = video.getCategoria();
         this.visualizacoes = video.getVisualizacoes();
         this.curtidas = video.getCurtidas();
+        this.usuario = video.getUsuario();
     }
 }
