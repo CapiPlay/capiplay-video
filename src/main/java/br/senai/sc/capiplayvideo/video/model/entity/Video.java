@@ -58,7 +58,7 @@ public class Video {
         this.visualizacoes++;
     }
 
-    public Video(String uuid, VideoDTO videoDTO, String caminho, String usuarioId, Long duracao) {
+    public Video(String uuid, VideoDTO videoDTO, String caminho, Usuario usuario, Long duracao) {
         this.uuid = uuid;
         this.titulo = videoDTO.titulo();
         this.descricao = videoDTO.descricao();
@@ -69,7 +69,7 @@ public class Video {
         this.duracao = duracao;
         this.publicacao = LocalDate.now();
         this.restrito = videoDTO.restrito();
-        this.usuario = new Usuario(usuarioId);
+        this.usuario = usuario;
         this.qtdComentarios = 0L;
         this.curtidas = 0L;
         this.visualizacoes = 0L;

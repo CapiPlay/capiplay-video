@@ -90,7 +90,8 @@ public class VideoService {
                 arquivoTemporario = Files.createTempFile(caminho, "miniatura_" + resolucaoEnum + "_", ".png");
                 ImageIO.write(imagemRedimensionada, "PNG", arquivoTemporario.toFile());
             }
-            Video video = new Video(uuid, videoDTO, diretorioEsse, usuarioId, durationInSeconds);
+            Usuario usuario = usuarioService.buscarUm(usuarioId);
+            Video video = new Video(uuid, videoDTO, diretorioEsse, usuario, durationInSeconds);
             video.getTags().forEach(tagService::salvar);
             repository.save(video);
             this.publisher.publish(new VideoSalvoEvent(video.getUuid(), false)); // Manda para o RabbitMQ
