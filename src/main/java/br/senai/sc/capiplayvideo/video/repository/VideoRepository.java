@@ -78,7 +78,7 @@ public interface VideoRepository extends JpaRepository<Video, String> {
             "(video.pontuacao * 4) " +
             "AS TotalScore FROM video " +
             "WHERE video.shorts = :shorts " +
-            "GROUP BY video.titulo;",
+            "GROUP BY video.titulo",
             nativeQuery = true)
     List<VideoMiniaturaProjection> searchBy(String searchTerm, boolean shorts);
 

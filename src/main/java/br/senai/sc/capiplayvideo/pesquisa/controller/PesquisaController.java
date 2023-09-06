@@ -16,14 +16,13 @@ public class PesquisaController {
 
     private PesquisaService pesquisaService;
 
-    @GetMapping("/{string}")
+    @GetMapping("/{searchTerm}")
     public ResponseEntity<List<VideoMiniaturaProjection>> buscarVideos(
-            @PathVariable String string,
+            @PathVariable String searchTerm,
             @RequestParam("shorts") boolean shorts,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
-        Pesquisa pesquisa = new Pesquisa(string, usuarioId);
-        return ResponseEntity.ok(pesquisaService.buscarVideos(pesquisa, usuarioId, shorts));
+        return ResponseEntity.ok(pesquisaService.buscarVideos(searchTerm, usuarioId, shorts));
     }
 
 
