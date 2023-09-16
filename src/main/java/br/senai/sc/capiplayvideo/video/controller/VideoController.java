@@ -6,6 +6,7 @@ import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoRetornoDTO;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
 import br.senai.sc.capiplayvideo.video.service.VideoService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
