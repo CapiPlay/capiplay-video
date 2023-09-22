@@ -16,7 +16,8 @@ public class EngajamentoSubscriber {
     @RabbitListener(queues = "videos.v1.video-atualizado.video")
     public void on(VideoAtualizadoEvent videoAtualizadoEvent) {
         Video video = videoService.buscarUmVideo(videoAtualizadoEvent.id());
-        video.setCurtidas(videoAtualizadoEvent.qtdComentarios());
+        video.setCurtidas(videoAtualizadoEvent.qtdCurtidas());
+        video.setQtdComentarios(videoAtualizadoEvent.qtdComentarios());
         video.setPontuacao(videoAtualizadoEvent.pontuacao());
         videoService.atualizarVideo(video);
     }
