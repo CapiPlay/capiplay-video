@@ -28,10 +28,6 @@ public class Pesquisa {
 
     private LocalDateTime dataInsercao = LocalDateTime.now();
 
-    public Pesquisa(String pesquisa) {
-        this.pesquisa = pesquisa;
-    }
-
     public Pesquisa(String string, String usuarioId) {
         this.pesquisa = string;
         this.usuario = new Usuario(usuarioId);

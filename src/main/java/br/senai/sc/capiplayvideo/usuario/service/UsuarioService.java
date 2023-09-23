@@ -23,6 +23,7 @@ public class UsuarioService {
     }
 
     public List<Pesquisa> buscarHistoricoPesquisa(String uuid) {
+
         return pesquisaRepository.findAllByUsuario_Uuid(uuid, Sort.by(Sort.Direction.DESC, "dataInsercao"));
     }
 
