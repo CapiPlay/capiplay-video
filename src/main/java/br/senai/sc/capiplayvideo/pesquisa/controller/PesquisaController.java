@@ -19,9 +19,12 @@ public class PesquisaController {
     @GetMapping("/{searchTerm}")
     public ResponseEntity<List<VideoMiniaturaProjection>> buscarVideos(
             @PathVariable String searchTerm,
-            @RequestParam("shorts") boolean shorts,
+            @RequestParam(value = "shorts", required = false) Boolean shorts,
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
+
+        if (shorts == null) shorts = false;
+
         return ResponseEntity.ok(pesquisaService.buscarVideos(searchTerm, usuarioId, shorts));
     }
 
