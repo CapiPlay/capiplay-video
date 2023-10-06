@@ -152,7 +152,6 @@ public class VideoService {
         historico.incrementarVisualizacao();
         historico.atualizarData();
         visualizacaoService.salvar(historico);
-        video.incrementarVisualizacao();
         repository.save(video);
         return new VideoRetornoDTO(video);
     }
@@ -196,4 +195,9 @@ public class VideoService {
         return repository.findAllHistoricoMinimizado(usuarioId, pageable, shorts);
     }
 
+    public void visualizarVideo(String videoId, String usuarioId) {
+        Video video = repository.findById(videoId).orElseThrow(ObjetoInexistenteException::new);
+        video.incrementarVisualizacao();
+        repository.save(video);
+    }
 }
