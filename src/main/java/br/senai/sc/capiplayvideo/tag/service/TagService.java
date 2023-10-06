@@ -5,6 +5,8 @@ import br.senai.sc.capiplayvideo.tag.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TagService {
@@ -13,6 +15,10 @@ public class TagService {
 
     public void salvar(Tag tag) {
         repository.save(tag);
+    }
+
+    public List<Tag> buscarTodos() {
+        return repository.findAll();
     }
 
 }

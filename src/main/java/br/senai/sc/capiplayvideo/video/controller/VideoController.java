@@ -2,6 +2,8 @@ package br.senai.sc.capiplayvideo.video.controller;
 
 import br.senai.sc.capiplayvideo.pesquisa.model.dto.FiltroDTO;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
+import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
+import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoDTO;
 import br.senai.sc.capiplayvideo.video.model.dto.VideoRetornoDTO;
 import br.senai.sc.capiplayvideo.video.model.projection.VideoMiniaturaProjection;
@@ -23,6 +25,7 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService service;
+    private final TagService tagService;
 
     @PostMapping("/criar")
     public ResponseEntity<Void> criar(
@@ -76,6 +79,11 @@ public class VideoController {
             @RequestHeader(value = "usuarioId", required = false) String usuarioId
     ) {
         return ResponseEntity.ok(service.buscarShorts(usuarioId));
+    }
+
+    @GetMapping("/buscar-tags")
+    public ResponseEntity<List<Tag>> buscarTags() {
+        return ResponseEntity.ok(tagService.buscarTodos());
     }
 
     @GetMapping("/buscar-videos-canal")

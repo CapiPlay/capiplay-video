@@ -2,6 +2,7 @@ package br.senai.sc.capiplayvideo.video.service;
 
 import br.senai.sc.capiplayvideo.messaging.Publisher;
 import br.senai.sc.capiplayvideo.pesquisa.model.entity.Filtro;
+import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
 import br.senai.sc.capiplayvideo.tag.service.TagService;
 import br.senai.sc.capiplayvideo.exceptions.ObjetoInexistenteException;
 import br.senai.sc.capiplayvideo.usuario.model.entity.Usuario;
@@ -194,4 +195,5 @@ public class VideoService {
     public List<VideoMiniaturaProjection> buscarHistorico(Pageable pageable, String usuarioId) {
         return repository.findAllHistoricoMinimizado(usuarioId, pageable);
     }
+
 }
