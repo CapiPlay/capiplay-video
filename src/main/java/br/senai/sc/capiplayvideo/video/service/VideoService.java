@@ -192,8 +192,8 @@ public class VideoService {
         return repository.findAllByUsuario_Uuid(usuarioId, pageable);
     }
 
-    public List<VideoMiniaturaProjection> buscarHistorico(Pageable pageable, String usuarioId) {
-        return repository.findAllHistoricoMinimizado(usuarioId, pageable);
+    public List<VideoMiniaturaProjection> buscarHistorico(Pageable pageable, String usuarioId, Boolean shorts) {
+        return repository.findAllHistoricoMinimizado(usuarioId, pageable, shorts);
     }
 
 }
