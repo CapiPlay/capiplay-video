@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,7 +21,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
-    private List<Pesquisa> historicoPesquisa;
+    private Set<Pesquisa> historicoPesquisa;
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
