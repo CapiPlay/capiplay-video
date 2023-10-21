@@ -16,16 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class PesquisaService {
 
-    private PesquisaRepository repository;
-    private VideoRepository videoRepository;
-    private UsuarioService usuarioService;
+    private final PesquisaRepository repository;
+    private final VideoRepository videoRepository;
+    private final UsuarioService usuarioService;
 
     public List<VideoMiniaturaProjection> buscarVideos(String searchTerm, String uuid, boolean shorts) {
         Pesquisa pesquisa = new Pesquisa(searchTerm, uuid);
         Usuario usuario = usuarioService.buscarUm(uuid);
-        if (usuario.getHistoricoPesquisa().contains(pesquisa)){
-            usuario.getHistoricoPesquisa().remove(pesquisa);
-        }
+        usuario.getHistoricoPesquisa().add(pesquisa);
         repository.save(pesquisa);
         usuarioService.salvar(usuario);
         return videoRepository.searchBy(searchTerm, shorts);

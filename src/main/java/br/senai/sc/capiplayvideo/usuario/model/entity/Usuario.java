@@ -21,7 +21,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
-    private Set<Pesquisa> historicoPesquisa;
+    private List<Pesquisa> historicoPesquisa;
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
