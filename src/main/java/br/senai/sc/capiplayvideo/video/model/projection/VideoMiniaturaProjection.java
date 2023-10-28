@@ -1,5 +1,6 @@
 package br.senai.sc.capiplayvideo.video.model.projection;
 
+import br.senai.sc.capiplayvideo.usuario.model.entity.UsuarioProjection;
 import br.senai.sc.capiplayvideo.video.utils.DiretorioUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,6 +27,8 @@ public interface VideoMiniaturaProjection {
 
     @JsonIgnore
     String getCaminho();
+
+    UsuarioProjection getUsuario();
 
     default List<String> getCaminhos() {
         return DiretorioUtils.gerarListaStringArquivos(getCaminho());

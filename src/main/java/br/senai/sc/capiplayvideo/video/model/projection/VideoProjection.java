@@ -1,6 +1,7 @@
 package br.senai.sc.capiplayvideo.video.model.projection;
 
 import br.senai.sc.capiplayvideo.tag.model.entity.Tag;
+import br.senai.sc.capiplayvideo.usuario.model.entity.UsuarioProjection;
 import br.senai.sc.capiplayvideo.video.utils.DiretorioUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,5 +31,7 @@ public interface VideoProjection {
     Long getVisualizacoes();
 
     Long getCurtidas();
+
+    UsuarioProjection getUsuario();
 
 }
